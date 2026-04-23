@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aracari Playground — Portfolio &amp; Creative Work</title>
+  <meta name="description" content="Portfolio of graphic design, 3D design, and app development work." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#0b0d10;--surface:#13161b;--surface2:#1c2028;
+      --border:rgba(255,255,255,0.07);--text:#e8eaf0;--muted:#7a8195;
+      --accent:#c8f55a;--accent2:#5af5c0;
+      --font:'Baloo 2',cursive;
+      --nav-h:68px;--max-w:1120px;--radius:16px;
+    }
+    [data-theme="light"]{
+      --bg:#f5f6f0;--surface:#fff;--surface2:#eef0e8;
+      --border:rgba(0,0,0,0.08);--text:#1a1d24;--muted:#6b7280;--accent:#4a8a00;
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;transition:background .3s,color .3s}
+
+    /* NAV */
+    body>nav{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);display:flex;align-items:center;padding:0 2rem;background:color-mix(in srgb,var(--bg) 80%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+    body>nav .ni{max-width:var(--max-w);width:100%;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+    .logo{font-family:var(--font);font-size:1.4rem;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:8px;font-weight:700}
+    .logo-star{color:var(--accent)}
+    .nav-links{display:flex;align-items:center;gap:2rem;list-style:none}
+    .nav-links a{color:var(--muted);text-decoration:none;font-size:.9rem;transition:color .2s}
+    .nav-links a:hover{color:var(--text)}
+    .nav-right{display:flex;align-items:center;gap:1rem}
+    .btn-nav{padding:.45rem 1.2rem;border-radius:100px;background:var(--accent);color:#0b0d10;font-family:var(--font);font-size:.85rem;font-weight:700;text-decoration:none;transition:opacity .2s}
+    .btn-nav:hover{opacity:.85}
+    .theme-toggle{background:none;border:1px solid var(--border);border-radius:100px;padding:.35rem .7rem;color:var(--muted);cursor:pointer;font-size:.85rem;font-family:var(--font);transition:all .2s}
+    .theme-toggle:hover{border-color:var(--accent);color:var(--accent)}
+    .hamburger{display:none;background:none;border:1px solid var(--border);border-radius:8px;cursor:pointer;color:var(--text);font-size:1.1rem;padding:.35rem .6rem;transition:border-color .2s}
+    .hamburger:hover{border-color:var(--accent);color:var(--accent)}
+
+    /* DRAWER */
+    .drawer-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .3s}
+    .drawer-overlay.open{opacity:1;pointer-events:all}
+    .drawer{position:fixed;top:0;right:0;z-index:201;width:min(320px,85vw);height:100vh;background:var(--surface);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);box-shadow:-20px 0 60px rgba(0,0,0,.4)}
+    .drawer.open{transform:translateX(0)}
+    .drawer-header{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);height:var(--nav-h)}
+    .drawer-close{background:none;border:1px solid var(--border);border-radius:8px;padding:.35rem .6rem;color:var(--muted);cursor:pointer;font-size:1rem;transition:all .2s;line-height:1}
+    .drawer-close:hover{border-color:var(--accent);color:var(--accent)}
+    .drawer-links{flex:1;overflow:hidden;display:flex;flex-direction:column}
+    .drawer-links a{display:flex;align-items:center;justify-content:space-between;padding:5px 1.5rem;color:var(--text);text-decoration:none;font-family:var(--font);font-size:1.4rem;font-weight:600;border-bottom:1px solid var(--border);transition:background .15s,color .15s,padding-left .2s;opacity:0;transform-origin:left center;will-change:transform,opacity}
+    .drawer-links a:last-of-type{border-bottom:none}
+    .drawer-links a:hover{background:var(--surface2);color:var(--accent);padding-left:1.9rem}
+    .drawer-links a::after{content:'→';opacity:.25;font-size:1rem}
+    .drawer-links a:hover::after{opacity:1;color:var(--accent)}
+    .drawer-footer{flex-shrink:0;padding:1.5rem;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:.75rem}
+    .drawer-footer .btn-primary{justify-content:center;text-align:center}
+    .drawer-theme{display:flex;align-items:center;justify-content:space-between;font-size:.85rem;color:var(--muted)}
+    .drawer-theme button{background:var(--surface2);border:1px solid var(--border);border-radius:100px;padding:.3rem .8rem;font-family:var(--font);font-size:.8rem;color:var(--muted);cursor:pointer;transition:all .2s}
+    .drawer-theme button:hover{border-color:var(--accent);color:var(--accent)}
+
+    /* HERO */
+    .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:calc(var(--nav-h) + 4rem) 2rem 4rem;position:relative;overflow:hidden}
+    .hero-inner{max-width:var(--max-w);width:100%;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+    .hero-badge{display:inline-flex;align-items:center;gap:6px;background:color-mix(in srgb,var(--accent) 12%,transparent);border:1px solid color-mix(in srgb,var(--accent) 30%,transparent);color:var(--accent);border-radius:100px;padding:.3rem .8rem;font-size:.78rem;font-weight:600;margin-bottom:1.5rem;animation:fadeUp .6s ease both}
+    h1{font-family:var(--font);font-size:clamp(2.4rem,5vw,3.8rem);line-height:1.12;font-weight:800;margin-bottom:1.4rem;animation:fadeUp .6s .1s ease both}
+    h1 em{font-style:italic;color:var(--accent)}
+    .hero-sub{color:var(--muted);font-size:1.05rem;max-width:480px;margin-bottom:2.4rem;animation:fadeUp .6s .2s ease both}
+    .hero-actions{display:flex;gap:1rem;flex-wrap:wrap;animation:fadeUp .6s .3s ease both}
+    .btn-primary{padding:.75rem 1.8rem;border-radius:100px;background:var(--accent);color:#0b0d10;font-family:var(--font);font-size:.95rem;font-weight:700;text-decoration:none;transition:transform .2s,opacity .2s;display:inline-flex;align-items:center;gap:6px}
+    .btn-primary:hover{transform:translateY(-2px);opacity:.9}
+    .btn-ghost{padding:.75rem 1.8rem;border-radius:100px;border:1px solid var(--border);color:var(--text);font-family:var(--font);font-size:.95rem;text-decoration:none;transition:border-color .2s}
+    .btn-ghost:hover{border-color:var(--muted)}
+    .hero-visual{animation:fadeUp .7s .2s ease both}
+    .hero-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,.4)}
+    .hero-card-bar{background:var(--surface2);padding:.7rem 1rem;display:flex;gap:6px;align-items:center;border-bottom:1px solid var(--border)}
+    .dot{width:10px;height:10px;border-radius:50%}
+    .dot-r{background:#ff5f57}.dot-y{background:#ffbd2e}.dot-g{background:#28c840}
+    .hero-card-body{padding:2rem}
+    .card-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}
+    .stat-box{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:1rem}
+    .stat-num{font-family:var(--font);font-size:2rem;color:var(--accent);font-weight:800}
+    .stat-lbl{font-size:.78rem;color:var(--muted);margin-top:2px}
+    .perf-bar-wrap{margin-top:.5rem}
+    .perf-bar-label{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted);margin-bottom:4px}
+    .perf-bar{height:6px;background:var(--surface2);border-radius:100px;overflow:hidden}
+    .perf-bar-fill{height:100%;background:var(--accent);border-radius:100px;animation:barGrow 1.2s .8s ease both;transform-origin:left}
+    @keyframes barGrow{from{width:0!important}}
+    .orb{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;opacity:.3}
+    .orb1{width:500px;height:500px;background:radial-gradient(circle,var(--accent) 0%,transparent 70%);top:-100px;left:-150px}
+    .orb2{width:400px;height:400px;background:radial-gradient(circle,var(--accent2) 0%,transparent 70%);bottom:-100px;right:-100px}
+
+    /* SECTIONS */
+    section{padding:6rem 2rem}
+    .section-inner{max-width:var(--max-w);margin:0 auto}
+    .section-label{display:inline-block;font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem}
+    h2{font-family:var(--font);font-size:clamp(1.9rem,4vw,3rem);font-weight:800;line-height:1.2;margin-bottom:1rem}
+    h2 em{font-style:italic;color:var(--accent)}
+    .section-sub{color:var(--muted);font-size:1rem;max-width:560px}
+
+    /* FEATURES */
+    .features{background:var(--surface)}
+    .features-header{text-align:center;margin-bottom:3.5rem}
+    .features-header .section-sub{margin:0 auto}
+    .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+    .feature-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:1.8rem;transition:border-color .25s,transform .25s}
+    .feature-card:hover{border-color:color-mix(in srgb,var(--accent) 40%,transparent);transform:translateY(-4px)}
+    .feature-icon{width:44px;height:44px;background:color-mix(in srgb,var(--accent) 12%,transparent);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:1.2rem}
+    .feature-card h3{font-family:var(--font);font-size:1.15rem;font-weight:700;margin-bottom:.5rem}
+    .feature-card p{color:var(--muted);font-size:.9rem;line-height:1.65}
+
+    /* ALT FEATURES */
+    .alt-features{background:var(--bg)}
+    .alt-feature{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-bottom:6rem}
+    .alt-feature:last-child{margin-bottom:0}
+    .alt-feature.reverse{direction:rtl}
+    .alt-feature.reverse>*{direction:ltr}
+    .af-label{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.8rem}
+    .af-content h2{margin-bottom:1rem}
+    .af-content p{color:var(--muted);font-size:.97rem;margin-bottom:1.5rem}
+    .af-visual{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:2.5rem;display:flex;flex-direction:column;gap:1rem;min-height:240px;justify-content:center}
+    .score-ring-wrap{display:flex;align-items:center;gap:1.5rem}
+    .score-ring{width:100px;height:100px;flex-shrink:0;position:relative;display:flex;align-items:center;justify-content:center}
+    .score-ring svg{position:absolute;top:0;left:0;transform:rotate(-90deg)}
+    .score-ring circle.track{fill:none;stroke:var(--surface2);stroke-width:8}
+    .score-ring circle.fill{fill:none;stroke:var(--accent);stroke-width:8;stroke-linecap:round;stroke-dasharray:283;stroke-dashoffset:28;animation:ringDraw 1.4s .6s ease both}
+    @keyframes ringDraw{from{stroke-dashoffset:283}}
+    .score-num{font-family:var(--font);font-size:2rem;color:var(--accent);position:relative;z-index:1;font-weight:800}
+    .score-details{flex:1}
+    .score-metric{display:flex;justify-content:space-between;font-size:.85rem;padding:4px 0;border-bottom:1px solid var(--border)}
+    .score-metric:last-child{border-bottom:none}
+    .score-metric span:last-child{color:var(--accent);font-weight:600}
+    .secure-icon{font-size:3rem;margin-bottom:1rem}
+    .checklist{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+    .checklist li{display:flex;align-items:flex-start;gap:.6rem;font-size:.9rem;color:var(--muted)}
+    .checklist li::before{content:'✓';color:var(--accent);font-weight:700;flex-shrink:0}
+    .co2-display{text-align:center}
+    .co2-big{font-family:var(--font);font-size:3.5rem;color:var(--accent);line-height:1;font-weight:800}
+    .co2-unit{color:var(--muted);font-size:.85rem;margin-top:4px}
+    .co2-compare{display:flex;gap:1rem;margin-top:1.5rem}
+    .co2-bar-item{flex:1}
+    .co2-bar-label{font-size:.75rem;color:var(--muted);margin-bottom:4px}
+    .co2-bar{border-radius:100px;height:8px}
+    .co2-bar.green{background:var(--accent);width:10%}
+    .co2-bar.gray{background:var(--muted);width:100%}
+    .co2-bar-val{font-size:.75rem;color:var(--muted);margin-top:4px}
+
+    /* GALLERY */
+    .gallery-section{background:var(--bg)}
+    .gallery-filters{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2.5rem}
+    .filter-btn{padding:.45rem 1.1rem;border-radius:100px;border:1px solid var(--border);background:none;color:var(--muted);font-family:var(--font);font-size:.85rem;font-weight:600;cursor:pointer;transition:all .2s}
+    .filter-btn:hover{border-color:var(--muted);color:var(--text)}
+    .filter-btn.active{background:var(--accent);border-color:var(--accent);color:#0b0d10}
+    .masonry-grid{columns:3 280px;column-gap:1rem}
+    .masonry-item{break-inside:avoid;margin-bottom:1rem;border-radius:var(--radius);overflow:hidden;position:relative;cursor:pointer;background:var(--surface);border:1px solid var(--border);transition:transform .25s,box-shadow .25s}
+    .masonry-item:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,.35)}
+    .masonry-item img{width:100%;height:auto;display:block;transition:transform .4s}
+    .masonry-item:hover img{transform:scale(1.04)}
+    .item-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.75) 0%,transparent 55%);opacity:0;transition:opacity .3s;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem}
+    .masonry-item:hover .item-overlay{opacity:1}
+    .item-title{color:#fff;font-family:var(--font);font-size:1rem;font-weight:700;margin-bottom:.25rem}
+    .item-cat{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+    .item-zoom{position:absolute;top:.8rem;right:.8rem;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;color:#fff;font-size:.85rem;opacity:0;transition:opacity .3s}
+    .masonry-item:hover .item-zoom{opacity:1}
+    .masonry-item.hidden{display:none}
+
+    /* LIGHTBOX */
+    .lightbox{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.92);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;padding:2rem}
+    .lightbox.open{opacity:1;pointer-events:all}
+    .lightbox-inner{position:relative;max-width:1000px;width:100%;max-height:90vh;display:flex;flex-direction:column;align-items:center;transform:scale(.94);transition:transform .3s}
+    .lightbox.open .lightbox-inner{transform:scale(1)}
+    .lightbox-media{width:100%;max-height:75vh;object-fit:contain;border-radius:var(--radius);box-shadow:0 40px 80px rgba(0,0,0,.6);display:block}
+    .lightbox-info{margin-top:1.2rem;text-align:center}
+    .lightbox-title{font-family:var(--font);font-size:1.3rem;color:#fff;font-weight:700}
+    .lightbox-cat{font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-top:.3rem}
+    .lightbox-close{position:absolute;top:-3rem;right:0;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:50%;width:40px;height:40px;color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+    .lightbox-close:hover{background:rgba(255,255,255,.2)}
+    .lightbox-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:50%;width:44px;height:44px;color:#fff;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;z-index:10}
+    .lightbox-nav:hover{background:rgba(255,255,255,.2)}
+    .lightbox-prev{left:-3.5rem}.lightbox-next{right:-3.5rem}
+    .lightbox-counter{position:absolute;bottom:-2.2rem;left:50%;transform:translateX(-50%);font-size:.78rem;color:rgba(255,255,255,.4)}
+
+    /* FAQ */
+    .faq{background:var(--surface)}
+    .faq-header{margin-bottom:3rem}
+    .faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+    .faq-item{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+    .faq-q{width:100%;background:none;border:none;display:flex;justify-content:space-between;align-items:center;padding:1.3rem 1.5rem;font-family:var(--font);font-size:.95rem;font-weight:600;color:var(--text);cursor:pointer;text-align:left;gap:1rem}
+    .faq-q .chevron{flex-shrink:0;transition:transform .3s;color:var(--muted);font-size:.8rem}
+    .faq-item.open .faq-q .chevron{transform:rotate(180deg)}
+    .faq-a{max-height:0;overflow:hidden;transition:max-height .35s,padding .3s;padding:0 1.5rem;color:var(--muted);font-size:.9rem;line-height:1.7}
+    .faq-item.open .faq-a{max-height:300px;padding:0 1.5rem 1.3rem}
+
+    /* CTA */
+    .cta-section{background:var(--bg)}
+    .cta-banner{background:linear-gradient(135deg,var(--surface) 0%,var(--surface2) 100%);border:1px solid var(--border);border-radius:24px;padding:4rem;text-align:center;position:relative;overflow:hidden}
+    .cta-banner::before{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:300px;height:200px;background:radial-gradient(ellipse,color-mix(in srgb,var(--accent) 20%,transparent) 0%,transparent 70%)}
+    .cta-banner h2{margin-bottom:1rem;position:relative}
+    .cta-banner p{color:var(--muted);font-size:1rem;margin-bottom:2rem;position:relative}
+    .cta-actions{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;position:relative}
+
+    /* CONTACT */
+    .contact-section{background:var(--surface)}
+    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
+    .contact-form{display:flex;flex-direction:column;gap:1rem}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+    .form-group{display:flex;flex-direction:column;gap:.4rem}
+    .form-group label{font-size:.82rem;color:var(--muted);font-weight:600}
+    .form-group input,.form-group textarea,.form-group select{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:.7rem 1rem;font-family:var(--font);font-size:.9rem;color:var(--text);transition:border-color .2s;outline:none}
+    .form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--accent)}
+    .form-group textarea{resize:vertical;min-height:120px}
+    .form-group select option{background:var(--bg)}
+    .btn-submit{padding:.8rem 2rem;border-radius:100px;background:var(--accent);color:#0b0d10;font-family:var(--font);font-size:.95rem;font-weight:700;border:none;cursor:pointer;transition:opacity .2s;align-self:flex-start}
+    .btn-submit:hover{opacity:.85}
+    .newsletter-box{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;margin-top:1rem}
+    .newsletter-box h3{font-family:var(--font);font-size:1.3rem;font-weight:700;margin-bottom:.5rem}
+    .newsletter-box p{color:var(--muted);font-size:.88rem;margin-bottom:1rem}
+    .newsletter-row{display:flex;gap:.7rem}
+    .newsletter-row input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:.6rem 1.2rem;font-family:var(--font);font-size:.9rem;color:var(--text);outline:none;transition:border-color .2s}
+    .newsletter-row input:focus{border-color:var(--accent)}
+    .btn-sub{padding:.6rem 1.4rem;border-radius:100px;background:var(--accent);color:#0b0d10;font-family:var(--font);font-size:.85rem;font-weight:700;border:none;cursor:pointer;transition:opacity .2s;white-space:nowrap}
+    .btn-sub:hover{opacity:.85}
+
+    /* FOOTER */
+    footer{background:var(--bg);border-top:1px solid var(--border);padding:3rem 2rem 2rem}
+    .footer-inner{max-width:var(--max-w);margin:0 auto}
+    .footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem;margin-bottom:2.5rem}
+    .footer-brand p{color:var(--muted);font-size:.88rem;margin-top:.8rem;line-height:1.65;max-width:240px}
+    .footer-col h4{font-size:.82rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
+    .footer-links{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+    .footer-links a{color:var(--muted);text-decoration:none;font-size:.9rem;transition:color .2s}
+    .footer-links a:hover{color:var(--text)}
+    .footer-bottom{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);padding-top:1.5rem;flex-wrap:wrap;gap:1rem}
+    .footer-bottom p{color:var(--muted);font-size:.82rem}
+    .footer-bottom a{color:var(--accent);text-decoration:none}
+
+    /* ANIMATIONS */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+    .reveal{opacity:0;transform:translateY(30px);transition:opacity .6s,transform .6s}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+
+    /* RESPONSIVE */
+    @media(max-width:900px){
+      .hero-inner{grid-template-columns:1fr}.hero-visual{display:none}
+      .features-grid{grid-template-columns:1fr 1fr}
+      .alt-feature{grid-template-columns:1fr;gap:2rem}.alt-feature.reverse{direction:ltr}
+      .faq-grid{grid-template-columns:1fr}.contact-grid{grid-template-columns:1fr}
+      .footer-grid{grid-template-columns:1fr 1fr;gap:2rem}
+    }
+    @media(max-width:768px){.nav-links{display:none}.theme-toggle{display:none}.hamburger{display:block}}
+    @media(max-width:700px){.masonry-grid{columns:2 160px}.lightbox-prev{left:-.5rem}.lightbox-next{right:-.5rem}}
+    @media(max-width:600px){
+      .features-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr}
+      .form-row{grid-template-columns:1fr}.cta-banner{padding:2.5rem 1.5rem}
+      h1{font-size:2rem}section{padding:4rem 1.25rem}
+    }
+    @media(max-width:420px){.masonry-grid{columns:1}}
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="ni">
+    <a class="logo" href="#"><span class="logo-star">★</span>Aracari Playground</a>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#performance">Performance</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle">☀ Light</button>
+      <a class="btn-nav" href="#contact">Get Started</a>
+      <button class="hamburger" id="hamburger">☰</button>
+    </div>
+  </div>
+</nav>
+
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Navigation">
+  <div class="drawer-header">
+    <a class="logo" href="#" onclick="closeDrawer()"><span class="logo-star">★</span>Aracari Playground</a>
+    <button class="drawer-close" id="drawerClose">✕</button>
+  </div>
+  <div class="drawer-links">
+    <a href="#features" onclick="closeDrawer()">Features</a>
+    <a href="#performance" onclick="closeDrawer()">Performance</a>
+    <a href="#gallery" onclick="closeDrawer()">Gallery</a>
+    <a href="#faq" onclick="closeDrawer()">FAQ</a>
+    <a href="#contact" onclick="closeDrawer()">Contact</a>
+  </div>
+  <div class="drawer-footer">
+    <a href="#contact" class="btn-primary" onclick="closeDrawer()">Get Started →</a>
+    <div class="drawer-theme">
+      <span>Color theme</span>
+      <button id="drawerThemeToggle">☀ Light</button>
+    </div>
+  </div>
+</aside>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="orb orb1"></div><div class="orb orb2"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge">⚡ Portfolio &amp; Creative Work</div>
+      <h1>Welcome to <em>Aracari Playground</em></h1>
+      <p class="hero-sub">Graphic design, 3D design, and app development — all in one place. Deployed fast on Cloudflare.</p>
+      <div class="hero-actions">
+        <a href="#gallery" class="btn-primary">View Work →</a>
+        <a href="#contact" class="btn-ghost">Get in Touch</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card">
+        <div class="hero-card-bar"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <div class="hero-card-body">
+          <div class="card-stat-grid">
+            <div class="stat-box"><div class="stat-num">98</div><div class="stat-lbl">PageSpeed Score</div></div>
+            <div class="stat-box"><div class="stat-num">0.06g</div><div class="stat-lbl">CO₂ per view</div></div>
+            <div class="stat-box"><div class="stat-num">100%</div><div class="stat-lbl">WCAG 2.1 AA</div></div>
+            <div class="stat-box"><div class="stat-num">Static</div><div class="stat-lbl">No DB, no risk</div></div>
+          </div>
+          <div class="perf-bar-wrap"><div class="perf-bar-label"><span>Performance</span><span>98</span></div><div class="perf-bar"><div class="perf-bar-fill" style="width:98%"></div></div></div>
+          <div class="perf-bar-wrap" style="margin-top:.6rem"><div class="perf-bar-label"><span>Accessibility</span><span>100</span></div><div class="perf-bar"><div class="perf-bar-fill" style="width:100%"></div></div></div>
+          <div class="perf-bar-wrap" style="margin-top:.6rem"><div class="perf-bar-label"><span>SEO</span><span>95</span></div><div class="perf-bar"><div class="perf-bar-fill" style="width:95%"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="section-inner">
+    <div class="features-header">
+      <div class="section-label">Everything you need</div>
+      <h2>Aracari Playground <em>Features</em></h2>
+      <p class="section-sub">Built for speed, conversion, and simplicity — no extra tooling required.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal"><div class="feature-icon">🎨</div><h3>Tailwind CSS</h3><p>Transform your template's appearance with the beloved Tailwind framework. Easily customize your design, bringing your unique vision to life.</p></div>
+      <div class="feature-card reveal"><div class="feature-icon">📬</div><h3>Contact Form</h3><p>Supports topics, enabling submissions to go directly to Slack or services like SendGrid/Postmark. Assign different channels to each topic.</p></div>
+      <div class="feature-card reveal"><div class="feature-icon">📰</div><h3>Newsletters</h3><p>Mailchimp integration empowers you to create multiple forms with robust tag and list support. Streamline your marketing effortlessly.</p></div>
+      <div class="feature-card reveal"><div class="feature-icon">🧩</div><h3>Page Block Builder</h3><p>Craft your perfect page with a selection of versatile blocks. Customize and extend exactly the way you want it.</p></div>
+      <div class="feature-card reveal"><div class="feature-icon">🔗</div><h3>Git-Based CMS</h3><p>With Static CMS, your content lives in a Git repository, ensuring efficient content management and seamless team collaboration.</p></div>
+      <div class="feature-card reveal"><div class="feature-icon">🌓</div><h3>Light &amp; Dark Mode</h3><p>Give your visitors the freedom to choose their preferred color scheme, ensuring a personalized browsing experience from day one.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ALT FEATURES -->
+<section class="alt-features" id="performance">
+  <div class="section-inner">
+    <div class="alt-feature reveal">
+      <div class="af-content">
+        <div class="af-label">Performance</div>
+        <h2>A <em>green</em> page speed score</h2>
+        <p>Achieving scores in the high 90s and adhering to WCAG 2.1 AA standards, Aracari Playground demonstrates an unwavering commitment to speed and accessibility.</p>
+        <a href="#contact" class="btn-primary">Get Started →</a>
+      </div>
+      <div class="af-visual">
+        <div class="score-ring-wrap">
+          <div class="score-ring">
+            <svg viewBox="0 0 100 100" width="100" height="100"><circle class="track" cx="50" cy="50" r="45"/><circle class="fill" cx="50" cy="50" r="45"/></svg>
+            <div class="score-num">98</div>
+          </div>
+          <div class="score-details">
+            <div class="score-metric"><span>Performance</span><span>98</span></div>
+            <div class="score-metric"><span>Accessibility</span><span>100</span></div>
+            <div class="score-metric"><span>Best Practices</span><span>100</span></div>
+            <div class="score-metric"><span>SEO</span><span>95</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="alt-feature reverse reveal">
+      <div class="af-content">
+        <div class="af-label">Security</div>
+        <h2><em>Secure</em> by design</h2>
+        <p>By eliminating databases and server-side code, static sites become less prone to attacks. Embrace the robust security of static architecture.</p>
+      </div>
+      <div class="af-visual">
+        <div class="secure-icon">🔒</div>
+        <ul class="checklist">
+          <li>No database to breach or exploit</li>
+          <li>No server-side code execution</li>
+          <li>Edge-cached, globally distributed</li>
+          <li>Automatic HTTPS via Cloudflare</li>
+          <li>DDoS protection built-in</li>
+        </ul>
+      </div>
+    </div>
+    <div class="alt-feature reveal">
+      <div class="af-content">
+        <div class="af-label">Sustainability</div>
+        <h2><em>Green</em> &amp; lean</h2>
+        <p>Aracari Playground's smaller, faster site means quicker conversions and a lighter environmental footprint. Up to 90% less CO₂ than a typical WordPress site.</p>
+      </div>
+      <div class="af-visual">
+        <div class="co2-display"><div class="co2-big">0.06g</div><div class="co2-unit">CO₂ per page view</div></div>
+        <div class="co2-compare">
+          <div class="co2-bar-item"><div class="co2-bar-label">Aracari Playground</div><div class="co2-bar green"></div><div class="co2-bar-val">0.06g</div></div>
+          <div class="co2-bar-item"><div class="co2-bar-label">WordPress avg</div><div class="co2-bar gray"></div><div class="co2-bar-val">~0.6g+</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery-section" id="gallery">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Portfolio</div>
+      <h2>Selected <em>Work</em></h2>
+      <p class="section-sub" style="margin-bottom:2rem">Graphic design, 3D, and app development projects.</p>
+    </div>
+    <div class="gallery-filters reveal">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="graphic-design">Graphic Design</button>
+      <button class="filter-btn" data-filter="3d">3D Design</button>
+      <button class="filter-btn" data-filter="app">App Dev</button>
+    </div>
+    <div class="masonry-grid" id="masonryGrid">
+
+      <div class="masonry-item" data-cat="graphic-design" data-title="Brand Identity System">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='420' viewBox='0 0 600 420'%3E%3Crect width='600' height='420' fill='%231a1f2e'/%3E%3Ccircle cx='200' cy='200' r='120' fill='none' stroke='%23c8f55a' stroke-width='3'/%3E%3Ccircle cx='200' cy='200' r='80' fill='%23c8f55a' opacity='.15'/%3E%3Crect x='340' y='80' width='180' height='4' fill='%23c8f55a'/%3E%3Crect x='340' y='110' width='140' height='3' fill='%23ffffff' opacity='.3'/%3E%3Crect x='340' y='135' width='160' height='3' fill='%23ffffff' opacity='.2'/%3E%3Crect x='340' y='160' width='100' height='3' fill='%23ffffff' opacity='.2'/%3E%3Crect x='340' y='270' width='60' height='28' rx='14' fill='%23c8f55a'/%3E%3Ctext x='200' y='207' font-family='serif' font-size='48' fill='%23c8f55a' text-anchor='middle' opacity='.9'%3EBi%3C/text%3E%3C/svg%3E" alt="Brand Identity System" />
+        <div class="item-overlay"><div class="item-title">Brand Identity System</div><span class="item-cat">Graphic Design</span></div>
+        <div class="item-zoom">⤢</div>
+      </div>
+
+      <div class="masonry-item" data-cat="3d" data-title="Product Visualization">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='500' viewBox='0 0 600 500'%3E%3Crect width='600' height='500' fill='%230f1420'/%3E%3Cellipse cx='300' cy='400' rx='180' ry='30' fill='%23000' opacity='.5'/%3E%3Cpolygon points='300,80 460,280 300,340 140,280' fill='%231e2535' stroke='%235af5c0' stroke-width='1.5'/%3E%3Cpolygon points='300,80 460,280 300,220' fill='%23253045' stroke='%235af5c0' stroke-width='1.5'/%3E%3Cpolygon points='300,80 140,280 300,220' fill='%231a2a38' stroke='%235af5c0' stroke-width='1.5'/%3E%3Cpolygon points='300,220 460,280 300,340 140,280' fill='%23162030' stroke='%235af5c0' stroke-width='1.5'/%3E%3Ccircle cx='480' cy='100' r='5' fill='%235af5c0' opacity='.6'/%3E%3C/svg%3E" alt="Product Visualization" />
+        <div class="item-overlay"><div class="item-title">Product Visualization</div><span class="item-cat">3D Design</span></div>
+        <div class="item-zoom">⤢</div>
+      </div>
+
+      <div class="masonry-item" data-cat="app" data-title="Bird Weight Tracker">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='360' viewBox='0 0 600 360'%3E%3Crect width='600' height='360' fill='%2313161b'/%3E%3Crect x='40' y='40' width='160' height='280' rx='16' fill='%231c2028' stroke='%23ffffff11' stroke-width='1'/%3E%3Crect x='55' y='60' width='130' height='16' rx='4' fill='%23c8f55a' opacity='.8'/%3E%3Crect x='55' y='140' width='130' height='60' rx='8' fill='%230b0d10'/%3E%3Cpolyline points='65,185 80,170 95,175 110,155 125,160 140,145 155,150 170,135' fill='none' stroke='%23c8f55a' stroke-width='2'/%3E%3Crect x='240' y='40' width='320' height='280' rx='16' fill='%231c2028' stroke='%23ffffff11' stroke-width='1'/%3E%3Crect x='260' y='120' width='90' height='10' rx='3' fill='%23ffffff' opacity='.12'/%3E%3Crect x='380' y='120' width='60' height='10' rx='3' fill='%23c8f55a' opacity='.5'/%3E%3Crect x='260' y='148' width='90' height='10' rx='3' fill='%23ffffff' opacity='.12'/%3E%3Crect x='380' y='148' width='50' height='10' rx='3' fill='%23c8f55a' opacity='.4'/%3E%3Crect x='260' y='176' width='90' height='10' rx='3' fill='%23ffffff' opacity='.12'/%3E%3Crect x='380' y='176' width='70' height='10' rx='3' fill='%23c8f55a' opacity='.6'/%3E%3C/svg%3E" alt="Bird Weight Tracker" />
+        <div class="item-overlay"><div class="item-title">Bird Weight Tracker</div><span class="item-cat">App Dev</span></div>
+        <div class="item-zoom">⤢</div>
+      </div>
+
+      <div class="masonry-item" data-cat="graphic-design" data-title="Event Poster Series">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='680' viewBox='0 0 480 680'%3E%3Crect width='480' height='680' fill='%230b0d10'/%3E%3Ccircle cx='240' cy='240' r='180' fill='none' stroke='%23c8f55a' stroke-width='60' opacity='.08'/%3E%3Ccircle cx='240' cy='240' r='120' fill='none' stroke='%23c8f55a' stroke-width='2' opacity='.4'/%3E%3Ccircle cx='240' cy='240' r='60' fill='%23c8f55a' opacity='.15'/%3E%3Crect x='60' y='460' width='360' height='5' fill='%23c8f55a' opacity='.8'/%3E%3Crect x='60' y='490' width='280' height='18' rx='3' fill='%23ffffff' opacity='.8'/%3E%3Crect x='60' y='600' width='80' height='30' rx='15' fill='%23c8f55a'/%3E%3C/svg%3E" alt="Event Poster Series" />
+        <div class="item-overlay"><div class="item-title">Event Poster Series</div><span class="item-cat">Graphic Design</span></div>
+        <div class="item-zoom">⤢</div>
+      </div>
+
+      <div class="masonry-item" data-cat="3d" data-title="Architectural Render">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='700' height='420' viewBox='0 0 700 420'%3E%3Crect width='700' height='420' fill='%230a0e18'/%3E%3Crect x='0' y='300' width='700' height='120' fill='%23111827'/%3E%3Cpolygon points='200,300 200,120 350,60 500,120 500,300' fill='%231a2235' stroke='%235af5c0' stroke-width='1'/%3E%3Crect x='240' y='200' width='40' height='100' fill='%230a0e18' stroke='%235af5c0' stroke-width='.5'/%3E%3Crect x='320' y='200' width='40' height='100' fill='%230a0e18' stroke='%235af5c0' stroke-width='.5'/%3E%3Ccircle cx='580' cy='80' r='5' fill='%23ffdd88' opacity='.5'/%3E%3C/svg%3E" alt="Architectural Render" />
+        <div class="item-overlay"><div class="item-title">Architectural Render</div><span class="item-cat">3D Design</span></div>
+        <div class="item-zoom">⤢</div>
+      </div>
+
+      <div class="masonry-item" data-cat="app" data-title="InDesign Automation Suite">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'%3E%3Crect width='600' height='400' fill='%2313161b'/%3E%3Crect x='0' y='0' width='600' height='36' fill='%231c2028'/%3E%3Ccircle cx='18' cy='18' r='6' fill='%23ff5f57'/%3E%3Ccircle cx='36' cy='18' r='6' fill='%23ffbd2e'/%3E%3Ccircle cx='54' cy='18' r='6' fill='%2328c840'/%3E%3Crect x='20' y='60' width='560' height='10' rx='2' fill='%23c8f55a' opacity='.6'/%3E%3Crect x='20' y='84' width='400' height='8' rx='2' fill='%23ffffff' opacity='.15'/%3E%3Crect x='40' y='128' width='340' height='8' rx='2' fill='%235af5c0' opacity='.4'/%3E%3Crect x='20' y='270' width='560' height='80' rx='8' fill='%230b0d10'/%3E%3C/svg%3E" alt="InDesign Automation Suite" />
+        <div class="item-overlay"><div class="item-title">InDesign Automation Suite</div><span class="item-cat">App Dev</span></div>
+        <div class="item-zoom">⤢</div>
+      </div>
+
+      <div class="masonry-item" data-cat="graphic-design" data-title="Magazine Layout">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='660' viewBox='0 0 500 660'%3E%3Crect width='500' height='660' fill='%23f5f4ef'/%3E%3Crect x='0' y='0' width='500' height='220' fill='%231a1d24'/%3E%3Crect x='30' y='240' width='440' height='6' fill='%231a1d24'/%3E%3Crect x='30' y='268' width='300' height='28' rx='2' fill='%231a1d24'/%3E%3Crect x='30' y='390' width='200' height='200' rx='4' fill='%23e8e6df'/%3E%3Ctext x='250' y='110' font-family='serif' font-size='42' fill='%23c8f55a' opacity='.9'%3EDESIGN%3C/text%3E%3Ctext x='250' y='155' font-family='serif' font-size='22' fill='%23ffffff' opacity='.6'%3EQuarterly%3C/text%3E%3C/svg%3E" alt="Magazine Layout" />
+        <div class="item-overlay"><div class="item-title">Magazine Layout</div><span class="item-cat">Graphic Design</span></div>
+        <div class="item-zoom">⤢</div>
+      </div>
+
+      <div class="masonry-item" data-cat="3d" data-title="Character Model">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='460' height='580' viewBox='0 0 460 580'%3E%3Crect width='460' height='580' fill='%230d1117'/%3E%3Ccircle cx='230' cy='140' r='70' fill='%231e2535' stroke='%235af5c0' stroke-width='1'/%3E%3Crect x='170' y='210' width='120' height='160' rx='12' fill='%231a2235' stroke='%235af5c0' stroke-width='1'/%3E%3Crect x='130' y='220' width='40' height='120' rx='8' fill='%231a2235' stroke='%235af5c0' stroke-width='1'/%3E%3Crect x='290' y='220' width='40' height='120' rx='8' fill='%231a2235' stroke='%235af5c0' stroke-width='1'/%3E%3Crect x='185' y='370' width='40' height='130' rx='8' fill='%231a2235' stroke='%235af5c0' stroke-width='1'/%3E%3Crect x='235' y='370' width='40' height='130' rx='8' fill='%231a2235' stroke='%235af5c0' stroke-width='1'/%3E%3Ccircle cx='210' cy='130' r='8' fill='%235af5c0' opacity='.6'/%3E%3Ccircle cx='250' cy='130' r='8' fill='%235af5c0' opacity='.6'/%3E%3C/svg%3E" alt="Character Model" />
+        <div class="item-overlay"><div class="item-title">Character Model</div><span class="item-cat">3D Design</span></div>
+        <div class="item-zoom">⤢</div>
+      </div>
+
+      <div class="masonry-item" data-cat="app" data-title="Pip: Wings of Fate">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'%3E%3Cdefs%3E%3ClinearGradient id='sky' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%230b0e18'/%3E%3Cstop offset='1' stop-color='%231a2540'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='600' height='400' fill='url(%23sky)'/%3E%3Crect x='0' y='300' width='600' height='100' fill='%23111827'/%3E%3Crect x='0' y='280' width='180' height='120' fill='%231a2235'/%3E%3Crect x='200' y='260' width='100' height='140' fill='%231a2235'/%3E%3Crect x='420' y='270' width='180' height='130' fill='%231a2235'/%3E%3Cpolygon points='280,200 260,220 260,180' fill='%23c8f55a'/%3E%3Ccircle cx='280' cy='200' r='8' fill='%23c8f55a'/%3E%3Ctext x='30' y='30' font-family='serif' font-size='16' fill='%23c8f55a' opacity='.9'%3EPip: Wings of Fate%3C/text%3E%3C/svg%3E" alt="Pip: Wings of Fate" />
+        <div class="item-overlay"><div class="item-title">Pip: Wings of Fate</div><span class="item-cat">App Dev</span></div>
+        <div class="item-zoom">⤢</div>
+      </div>
+
+      <div class="masonry-item" data-cat="graphic-design" data-title="Packaging Design">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='560' height='420' viewBox='0 0 560 420'%3E%3Crect width='560' height='420' fill='%23f0ece0'/%3E%3Crect x='160' y='60' width='240' height='300' rx='4' fill='%231a1d24'/%3E%3Crect x='175' y='80' width='210' height='140' fill='%23c8f55a'/%3E%3Ccircle cx='280' cy='150' r='45' fill='%231a1d24'/%3E%3Ctext x='280' y='158' font-family='serif' font-size='22' fill='%23c8f55a' text-anchor='middle'%3EAP%3C/text%3E%3Crect x='185' y='240' width='190' height='12' rx='2' fill='%23ffffff' opacity='.8'/%3E%3C/svg%3E" alt="Packaging Design" />
+        <div class="item-overlay"><div class="item-title">Packaging Design</div><span class="item-cat">Graphic Design</span></div>
+        <div class="item-zoom">⤢</div>
+      </div>
+
+      <div class="masonry-item" data-cat="3d" data-title="Environment Scene">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='700' height='460' viewBox='0 0 700 460'%3E%3Cdefs%3E%3ClinearGradient id='envsky' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%230a0c14'/%3E%3Cstop offset='1' stop-color='%23162030'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='700' height='460' fill='url(%23envsky)'/%3E%3Crect x='0' y='340' width='700' height='120' fill='%230d1520'/%3E%3Crect x='80' y='200' width='60' height='140' fill='%231a2535' stroke='%235af5c0' stroke-width='.5'/%3E%3Crect x='280' y='160' width='140' height='180' fill='%231a2535' stroke='%235af5c0' stroke-width='.5'/%3E%3Crect x='500' y='210' width='80' height='130' fill='%231a2535' stroke='%235af5c0' stroke-width='.5'/%3E%3Ccircle cx='600' cy='60' r='15' fill='%23ffdd88' opacity='.3'/%3E%3C/svg%3E" alt="Environment Scene" />
+        <div class="item-overlay"><div class="item-title">Environment Scene</div><span class="item-cat">3D Design</span></div>
+        <div class="item-zoom">⤢</div>
+      </div>
+
+      <div class="masonry-item" data-cat="app" data-title="Grommet Banner Tool">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='460' viewBox='0 0 600 460'%3E%3Crect width='600' height='460' fill='%2313161b'/%3E%3Crect x='20' y='20' width='260' height='420' rx='12' fill='%231c2028' stroke='%23ffffff11' stroke-width='1'/%3E%3Crect x='36' y='40' width='228' height='16' rx='4' fill='%23c8f55a' opacity='.7'/%3E%3Crect x='50' y='86' width='200' height='120' rx='4' fill='%231a2235'/%3E%3Ccircle cx='64' cy='100' r='6' fill='%23c8f55a' opacity='.8'/%3E%3Ccircle cx='236' cy='100' r='6' fill='%23c8f55a' opacity='.8'/%3E%3Ccircle cx='64' cy='192' r='6' fill='%23c8f55a' opacity='.8'/%3E%3Ccircle cx='236' cy='192' r='6' fill='%23c8f55a' opacity='.8'/%3E%3Crect x='50' y='310' width='200' height='32' rx='8' fill='%23c8f55a'/%3E%3Crect x='300' y='20' width='280' height='420' rx='12' fill='%231c2028' stroke='%23ffffff11' stroke-width='1'/%3E%3Crect x='332' y='88' width='216' height='130' rx='4' fill='%23c8f55a' opacity='.1'/%3E%3Ctext x='440' y='160' font-family='serif' font-size='28' fill='%23c8f55a' opacity='.5' text-anchor='middle'%3EBANNER%3C/text%3E%3Ccircle cx='340' cy='96' r='5' fill='%23c8f55a' opacity='.6'/%3E%3Ccircle cx='540' cy='96' r='5' fill='%23c8f55a' opacity='.6'/%3E%3Ccircle cx='340' cy='210' r='5' fill='%23c8f55a' opacity='.6'/%3E%3Ccircle cx='540' cy='210' r='5' fill='%23c8f55a' opacity='.6'/%3E%3C/svg%3E" alt="Grommet Banner Tool" />
+        <div class="item-overlay"><div class="item-title">Grommet Banner Tool</div><span class="item-cat">App Dev</span></div>
+        <div class="item-zoom">⤢</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+  <div class="lightbox-inner">
+    <button class="lightbox-close" id="lbClose">✕</button>
+    <button class="lightbox-nav lightbox-prev" id="lbPrev">‹</button>
+    <button class="lightbox-nav lightbox-next" id="lbNext">›</button>
+    <img class="lightbox-media" id="lbImg" src="" alt="" />
+    <div class="lightbox-info">
+      <div class="lightbox-title" id="lbTitle"></div>
+      <div class="lightbox-cat" id="lbCat"></div>
+    </div>
+    <div class="lightbox-counter" id="lbCounter"></div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="section-inner">
+    <div class="faq-header reveal">
+      <div class="section-label">Questions answered</div>
+      <h2>FAQ<em>s</em></h2>
+    </div>
+    <div class="faq-grid">
+      <div class="faq-item reveal"><button class="faq-q" aria-expanded="false">Where can I host Aracari Playground? <span class="chevron">▼</span></button><div class="faq-a">Aracari Playground deploys beautifully to Cloudflare Pages as a pure static site. Cloudflare offers unlimited free bandwidth, making it the top choice.</div></div>
+      <div class="faq-item reveal"><button class="faq-q" aria-expanded="false">What newsletter platforms are supported? <span class="chevron">▼</span></button><div class="faq-a">Aracari Playground integrates with Mailchimp for newsletter services, supporting multiple forms with robust tag and list management out of the box.</div></div>
+      <div class="faq-item reveal"><button class="faq-q" aria-expanded="false">How is the contact form handled? <span class="chevron">▼</span></button><div class="faq-a">Contact form submissions can be routed through Postmark or MailGun, or posted directly to a Slack channel per topic.</div></div>
+      <div class="faq-item reveal"><button class="faq-q" aria-expanded="false">Is Aracari Playground free to use? <span class="chevron">▼</span></button><div class="faq-a">Yes! Aracari Playground is released under the CC BY 4.0 license. Use it freely as long as you include attribution.</div></div>
+      <div class="faq-item reveal"><button class="faq-q" aria-expanded="false">Does it come with a CMS? <span class="chevron">▼</span></button><div class="faq-a">Yes. Aracari Playground is built on Static CMS, an open-source Git-based CMS that supports multiple users and lets your team edit content without touching code.</div></div>
+      <div class="faq-item reveal"><button class="faq-q" aria-expanded="false">Does it include user authentication? <span class="chevron">▼</span></button><div class="faq-a">Aracari Playground provides forms and starter edge functions, but doesn't include authentication logic. Integrate your own auth system or a service like Clerk or Auth0.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="section-inner">
+    <div class="cta-banner reveal">
+      <div class="section-label">Ready to launch?</div>
+      <h2>Kickstart your project <em>today</em></h2>
+      <p>Clone, configure, deploy. Your blazing fast portfolio is just minutes away.</p>
+      <div class="cta-actions">
+        <a href="#contact" class="btn-primary">Get in Touch →</a>
+        <a href="https://github.com/unfolding-io/StarFunnel" class="btn-ghost" target="_blank" rel="noopener">View on GitHub</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="section-inner">
+    <div class="contact-grid">
+      <div>
+        <div class="section-label reveal">Get in touch</div>
+        <h2 class="reveal">Let's build something <em>great</em></h2>
+        <p class="section-sub reveal" style="margin-bottom:2rem">Need help setting up Aracari Playground or want custom integrations? Reach out and we'll get you started.</p>
+        <form class="contact-form reveal" onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <div class="form-group"><label for="name">Name</label><input type="text" id="name" placeholder="Your name" required /></div>
+            <div class="form-group"><label for="email">Email</label><input type="email" id="email" placeholder="you@example.com" required /></div>
+          </div>
+          <div class="form-group">
+            <label for="topic">Topic</label>
+            <select id="topic">
+              <option value="">Select a topic…</option>
+              <option value="setup">Help with setup</option>
+              <option value="custom">Custom integration</option>
+              <option value="license">License inquiry</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group"><label for="message">Message</label><textarea id="message" placeholder="Tell us about your project…" required></textarea></div>
+          <button class="btn-submit" type="submit">Send Message →</button>
+          <p id="form-thanks" style="display:none;color:var(--accent);font-size:.9rem">✓ Thanks! We'll be in touch soon.</p>
+        </form>
+      </div>
+      <div>
+        <div class="newsletter-box reveal">
+          <h3>Join our newsletter</h3>
+          <p>Stay updated on new features, themes, and developments. No spam, ever.</p>
+          <div class="newsletter-row">
+            <input type="email" placeholder="you@example.com" aria-label="Email for newsletter" />
+            <button class="btn-sub" type="button" onclick="this.textContent='✓ Subscribed!'">Subscribe</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="logo" href="#"><span class="logo-star">★</span>Aracari Playground</a>
+        <p>A fast, green, and beautiful portfolio site. Deploy to Cloudflare in minutes.</p>
+      </div>
+      <div class="footer-col"><h4>Info</h4><ul class="footer-links"><li><a href="#">Home</a></li><li><a href="#">License</a></li><li><a href="#">About</a></li><li><a href="#contact">Contact</a></li></ul></div>
+      <div class="footer-col"><h4>Work</h4><ul class="footer-links"><li><a href="#gallery">Gallery</a></li><li><a href="#features">Features</a></li><li><a href="#performance">Performance</a></li></ul></div>
+      <div class="footer-col"><h4>Legal</h4><ul class="footer-links"><li><a href="#">Privacy</a></li><li><a href="#">Cookies</a></li><li><a href="#contact">Sign Up</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Aracari Playground. Inspired by <a href="https://starfunnel.unfolding.io/" target="_blank" rel="noopener">unfolding.io</a>. Released under CC BY 4.0.</p>
+      <p>Built for <a href="https://pages.cloudflare.com/" target="_blank" rel="noopener">Cloudflare Pages</a></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // DRAWER
+  const drawer=document.getElementById('drawer'),overlay=document.getElementById('drawerOverlay'),hamburger=document.getElementById('hamburger'),drawerClose=document.getElementById('drawerClose');
+  function springAnimate(el,delay,k,d){setTimeout(()=>{let x=260,sc=0.9,op=0,vx=0,vs=0;const dt=1/60;el.style.opacity='0';el.style.transform=`translateX(${x}px) scale(${sc})`;function tick(){vx+=(-k*x-d*vx)*dt;vs+=(-k*(sc-1)-d*vs)*dt;x+=vx*dt;sc+=vs*dt;op=Math.min(1,op+0.004);el.style.transform=`translateX(${x.toFixed(2)}px) scale(${sc.toFixed(4)})`;el.style.opacity=op.toFixed(3);if(Math.abs(x)>0.15||Math.abs(vx)>0.15||Math.abs(sc-1)>0.001||Math.abs(vs)>0.001){requestAnimationFrame(tick)}else{el.style.transform='translateX(0) scale(1)';el.style.opacity='1'}}requestAnimationFrame(tick)},delay)}
+  function openDrawer(){drawer.classList.add('open');overlay.classList.add('open');document.body.style.overflow='hidden';const links=[...drawer.querySelectorAll('.drawer-links a')],footer=drawer.querySelector('.drawer-footer');[...links,footer].forEach(el=>{el.style.transition='none';el.style.transform='translateX(260px) scale(0.9)';el.style.opacity='0'});links.forEach((el,i)=>springAnimate(el,60+i*180,3,1.8));springAnimate(footer,60+links.length*180,3,1.8);drawerClose.focus()}
+  function closeDrawer(){drawer.classList.remove('open');overlay.classList.remove('open');document.body.style.overflow='';hamburger.focus()}
+  hamburger.addEventListener('click',openDrawer);drawerClose.addEventListener('click',closeDrawer);overlay.addEventListener('click',closeDrawer);document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer()});
+
+  // THEME
+  const themeToggle=document.getElementById('themeToggle'),drawerThemeToggle=document.getElementById('drawerThemeToggle'),html=document.documentElement;let isDark=true;
+  function setTheme(d){isDark=d;html.setAttribute('data-theme',d?'dark':'light');const l=d?'☀ Light':'🌙 Dark';themeToggle.textContent=l;drawerThemeToggle.textContent=l}
+  themeToggle.addEventListener('click',()=>setTheme(!isDark));drawerThemeToggle.addEventListener('click',()=>setTheme(!isDark));
+
+  // GALLERY FILTERS
+  const filterBtns=document.querySelectorAll('.filter-btn'),masonryItems=document.querySelectorAll('.masonry-item');
+  filterBtns.forEach(btn=>btn.addEventListener('click',()=>{filterBtns.forEach(b=>b.classList.remove('active'));btn.classList.add('active');const f=btn.dataset.filter;masonryItems.forEach(item=>item.classList.toggle('hidden',f!=='all'&&item.dataset.cat!==f))}));
+
+  // LIGHTBOX
+  const lightbox=document.getElementById('lightbox'),lbImg=document.getElementById('lbImg'),lbTitle=document.getElementById('lbTitle'),lbCat=document.getElementById('lbCat'),lbCounter=document.getElementById('lbCounter'),lbClose=document.getElementById('lbClose'),lbPrev=document.getElementById('lbPrev'),lbNext=document.getElementById('lbNext');
+  let lbIndex=0,lbItems=[];
+  function getVisible(){return[...masonryItems].filter(el=>!el.classList.contains('hidden'))}
+  function openLightbox(i){lbItems=getVisible();lbIndex=i;showLb();lightbox.classList.add('open');document.body.style.overflow='hidden';lbClose.focus()}
+  function showLb(){const item=lbItems[lbIndex],img=item.querySelector('img');lbImg.src=img.src;lbImg.alt=item.dataset.title;lbTitle.textContent=item.dataset.title;lbCat.textContent=item.dataset.cat.replace('-',' ').replace(/\b\w/g,c=>c.toUpperCase());lbCounter.textContent=`${lbIndex+1} / ${lbItems.length}`;lbImg.style.opacity='0';lbImg.onload=()=>{lbImg.style.transition='opacity .25s';lbImg.style.opacity='1'}}
+  function closeLightbox(){lightbox.classList.remove('open');document.body.style.overflow='';lbImg.src=''}
+  function lbNav(d){lbItems=getVisible();lbIndex=(lbIndex+d+lbItems.length)%lbItems.length;showLb()}
+  masonryItems.forEach(item=>item.addEventListener('click',()=>{const v=getVisible(),i=v.indexOf(item);if(i!==-1)openLightbox(i)}));
+  lbClose.addEventListener('click',closeLightbox);lbPrev.addEventListener('click',()=>lbNav(-1));lbNext.addEventListener('click',()=>lbNav(1));lightbox.addEventListener('click',e=>{if(e.target===lightbox)closeLightbox()});
+  document.addEventListener('keydown',e=>{if(!lightbox.classList.contains('open'))return;if(e.key==='Escape')closeLightbox();if(e.key==='ArrowLeft')lbNav(-1);if(e.key==='ArrowRight')lbNav(1)});
+
+  // FAQ
+  document.querySelectorAll('.faq-q').forEach(btn=>btn.addEventListener('click',()=>{const item=btn.closest('.faq-item'),isOpen=item.classList.contains('open');document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));if(!isOpen)item.classList.add('open');btn.setAttribute('aria-expanded',!isOpen)}));
+
+  // FORM
+  function handleSubmit(e){e.preventDefault();document.getElementById('form-thanks').style.display='block';e.target.reset()}
+
+  // SCROLL REVEAL
+  const reveals=document.querySelectorAll('.reveal'),observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}}),{threshold:.12});
+  reveals.forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>
