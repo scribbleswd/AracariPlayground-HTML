@@ -17,7 +17,7 @@ function springAnimate(el, delay, k, d) {
     el.style.transform = `translateX(${x}px) scale(${sc})`;
     function tick(timestamp) {
       if (lastTime === null) lastTime = timestamp;
-      const elapsed = Math.min(timestamp - lastTime, 50);
+      const elapsed = Math.min(timestamp - lastTime, 100);
       const dt = (elapsed / 1000) * SPEED;
       lastTime = timestamp;
       vx += (-k * x - d * vx) * dt;
