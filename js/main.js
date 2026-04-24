@@ -9,16 +9,22 @@ function springAnimate(el, delay, k, d) {
       sc = 0.9,
       op = 0,
       vx = 0,
-      vs = 0;
-    const dt = 0.375 / 60;
+      vs = 0,
+      lastTime = null;
+    const SPEED = 0.375;
+    const OP_RATE = 0.09;
     el.style.opacity = "0";
     el.style.transform = `translateX(${x}px) scale(${sc})`;
-    function tick() {
+    function tick(timestamp) {
+      if (lastTime === null) lastTime = timestamp;
+      const elapsed = Math.min(timestamp - lastTime, 50);
+      const dt = (elapsed / 1000) * SPEED;
+      lastTime = timestamp;
       vx += (-k * x - d * vx) * dt;
       vs += (-k * (sc - 1) - d * vs) * dt;
       x += vx * dt;
       sc += vs * dt;
-      op = Math.min(1, op + 0.0015);
+      op = Math.min(1, op + OP_RATE * (elapsed / 1000));
       el.style.transform = `translateX(${x.toFixed(2)}px) scale(${sc.toFixed(4)})`;
       el.style.opacity = op.toFixed(3);
       if (
