@@ -11,8 +11,8 @@ function springAnimate(el, delay, k, d) {
       vx = 0,
       vs = 0,
       lastTime = null;
-    const SPEED = 0.375;
-    const OP_RATE = 0.09;
+    const SPEED = 1.132;
+    const OP_RATE = 0.272;
     el.style.opacity = "0";
     el.style.transform = `translateX(${x}px) scale(${sc})`;
     function tick(timestamp) {
