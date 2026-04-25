@@ -1,778 +1,751 @@
-<!doctype html>
-<html lang="en" data-theme="dark">
+﻿<!doctype html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Aracari Playground — Portfolio &amp; Creative Work</title>
-    <meta
-      name="description"
-      content="Portfolio of graphic design, 3D design, and app development work."
-    />
+    <title>Studio Aracari — Coming Soon</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/styles.css" />
+    <style>
+      :root {
+        --bg: #0a0f14;
+        --bg2: #0d1520;
+        --blue: #0097ce;
+        --blue-lt: #00c2ff;
+        --blue-dim: #005f82;
+        --blue-glow: rgba(0, 151, 206, 0.18);
+        --gold: #f5b335;
+        --gold-lt: #ffe168;
+        --white: #ffffff;
+        --off-white: #e8f4fb;
+        --muted: rgba(232, 244, 251, 0.42);
+        --border: rgba(0, 151, 206, 0.18);
+        --border-lt: rgba(0, 151, 206, 0.07);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        min-height: 100%;
+        background: var(--bg);
+        color: var(--off-white);
+        font-family: "Baloo 2", cursive;
+        overflow-x: hidden;
+      }
+
+      /* ── NOISE GRAIN ── */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+        opacity: 0.032;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* ── AMBIENT GLOWS ── */
+      .glow-top {
+        position: fixed;
+        top: -25%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90vw;
+        height: 55vh;
+        background: radial-gradient(
+          ellipse at center,
+          rgba(0, 151, 206, 0.14) 0%,
+          transparent 68%
+        );
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .glow-bottom {
+        position: fixed;
+        bottom: -20%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60vw;
+        height: 40vh;
+        background: radial-gradient(
+          ellipse at center,
+          rgba(0, 151, 206, 0.07) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* ── GRID LINES ── */
+      .grid-bg {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        background-image:
+          linear-gradient(rgba(0, 151, 206, 0.045) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 151, 206, 0.045) 1px, transparent 1px);
+        background-size: 52px 52px;
+        mask-image: radial-gradient(
+          ellipse 90% 70% at 50% 50%,
+          black 30%,
+          transparent 100%
+        );
+      }
+
+      /* ── SCAN LINE ── */
+      .scan-line {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--blue),
+          var(--blue-lt),
+          var(--blue),
+          transparent
+        );
+        opacity: 0;
+        animation: scan 7s ease-in-out 2.5s infinite;
+        z-index: 100;
+        pointer-events: none;
+      }
+
+      /* ── PAGE WRAPPER ── */
+      .page {
+        position: relative;
+        z-index: 1;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      /* ════════════════════════════
+     TOP NAV BAR
+  ════════════════════════════ */
+      .topbar {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 clamp(24px, 5vw, 72px);
+        height: 54px;
+        border-bottom: 1px solid var(--border);
+        background: rgba(10, 15, 20, 0.85);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        animation: fade-down 0.7s ease both;
+        flex-shrink: 0;
+      }
+
+      .topbar-inner {
+        width: 100%;
+        max-width: 1000px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .topbar-brand {
+        font-family: "Baloo 2", cursive;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: var(--blue-lt);
+      }
+
+      .topbar-status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-family: "Baloo 2", cursive;
+        font-size: 10px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--gold);
+        box-shadow: 0 0 8px var(--gold);
+        animation: blink 2.4s ease-in-out infinite;
+        flex-shrink: 0;
+      }
+
+      /* ════════════════════════════
+     UNDER CONSTRUCTION BANNER
+  ════════════════════════════ */
+      .uc-banner {
+        width: 100%;
+        padding: 18px 24px;
+        text-align: center;
+        background: linear-gradient(
+          90deg,
+          transparent 0%,
+          rgba(0, 151, 206, 0.08) 20%,
+          rgba(0, 151, 206, 0.14) 50%,
+          rgba(0, 151, 206, 0.08) 80%,
+          transparent 100%
+        );
+        border-bottom: 1px solid var(--border);
+        animation: fade-down 0.8s ease 0.1s both;
+        flex-shrink: 0;
+      }
+
+      .uc-inner {
+        display: inline-flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .uc-rule {
+        width: 48px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--blue));
+        opacity: 0.7;
+      }
+      .uc-rule.right {
+        background: linear-gradient(90deg, var(--blue), transparent);
+      }
+
+      .uc-title {
+        font-family: "Baloo 2", cursive;
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: 0.35em;
+        text-transform: uppercase;
+        color: var(--blue-lt);
+      }
+
+      .uc-sub {
+        display: block;
+        font-family: "Baloo 2", cursive;
+        font-size: 12px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-top: 5px;
+        text-align: center;
+      }
+
+      /* ════════════════════════════
+     HERO
+  ════════════════════════════ */
+      .hero {
+        flex: 1;
+        width: 100%;
+        max-width: 1100px;
+        padding: 56px clamp(24px, 5vw, 64px) 48px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+
+      /* ── CENTERED VERTICAL STACK ── */
+      .hero-stack {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        animation: fade-up 1s ease 0.3s both;
+      }
+
+      .hero-stack .eyebrow {
+        margin-bottom: 20px;
+      }
+
+      .hero-stack h1 {
+        margin-bottom: 32px;
+      }
+
+      .eyebrow {
+        font-family: "Baloo 2", cursive;
+        font-size: 15px;
+        font-weight: 500;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: var(--blue);
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .eyebrow::before,
+      .eyebrow::after {
+        content: "";
+        display: block;
+        width: 28px;
+        height: 1px;
+        background: var(--blue);
+        opacity: 0.55;
+      }
+
+      h1 {
+        font-family: "Baloo 2", cursive;
+        font-size: clamp(56px, 9vw, 118px);
+        font-weight: 700;
+        line-height: 0.89;
+        letter-spacing: -0.025em;
+        color: var(--white);
+      }
+
+      h1 em {
+        font-style: italic;
+        background: linear-gradient(
+          135deg,
+          var(--blue-lt) 0%,
+          var(--blue) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      /* ── HERO BIRD — centered between headline and slogan ── */
+      .hero-bird {
+        display: block;
+        width: min(350px, calc(100vw - 48px));
+        height: auto;
+        opacity: 1;
+        filter: brightness(0) invert(1);
+        animation: fade-in 1.4s ease 0.5s both;
+        margin-bottom: 32px;
+      }
+
+      /* ── SLOGAN ── */
+      .slogan {
+        font-family: "Baloo 2", cursive;
+        font-size: clamp(18px, 2vw, 22px);
+        font-weight: 400;
+        font-style: italic;
+        color: rgba(232, 244, 251, 0.5);
+        max-width: min(660px, calc(100vw - 48px));
+        line-height: 1.6;
+        margin-bottom: 44px;
+        animation: fade-up 1s ease 0.45s both;
+      }
+
+      /* ── DIVIDER ── */
+      .h-rule {
+        width: min(440px, 80vw);
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--blue) 35%,
+          var(--blue-lt) 50%,
+          var(--blue) 65%,
+          transparent
+        );
+        opacity: 0.3;
+        margin-bottom: 44px;
+        animation: fade-in 1.2s ease 0.5s both;
+      }
+
+      /* ── DISCIPLINES ── */
+      .disciplines {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 52px;
+        max-width: 700px;
+        animation: fade-up 1s ease 0.55s both;
+      }
+
+      .dtag {
+        font-family: "Baloo 2", cursive;
+        font-size: 10px;
+        font-weight: 400;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        padding: 8px 18px;
+        border-radius: 3px;
+        cursor: default;
+        transition: all 0.25s;
+        white-space: nowrap;
+      }
+
+      .dtag-blue {
+        border: 1px solid rgba(0, 151, 206, 0.28);
+        color: rgba(0, 194, 255, 0.6);
+        background: rgba(0, 151, 206, 0.045);
+      }
+      .dtag-blue:hover {
+        border-color: var(--blue);
+        color: var(--blue-lt);
+        background: rgba(0, 151, 206, 0.11);
+        box-shadow: 0 0 16px rgba(0, 151, 206, 0.15);
+      }
+
+      .dtag-gold {
+        border: 1px solid rgba(245, 179, 53, 0.22);
+        color: rgba(245, 179, 53, 0.6);
+        background: rgba(245, 179, 53, 0.04);
+      }
+      .dtag-gold:hover {
+        border-color: var(--gold);
+        color: var(--gold-lt);
+        background: rgba(245, 179, 53, 0.08);
+        box-shadow: 0 0 16px rgba(245, 179, 53, 0.1);
+      }
+
+      /* ── EMAIL FORM ── */
+      .notify-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        animation: fade-up 1s ease 0.65s both;
+      }
+
+      .notify-label {
+        font-family: "Baloo 2", cursive;
+        font-size: 10px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 14px;
+      }
+
+      .notify-form {
+        display: flex;
+        width: min(420px, 88vw);
+      }
+
+      .notify-form input {
+        flex: 1;
+        background: rgba(0, 151, 206, 0.06);
+        border: 1px solid var(--border);
+        border-right: none;
+        color: var(--off-white);
+        font-family: "Baloo 2", cursive;
+        font-size: 12px;
+        padding: 13px 18px;
+        outline: none;
+        border-radius: 3px 0 0 3px;
+        transition:
+          border-color 0.3s,
+          background 0.3s;
+        min-width: 0;
+      }
+
+      .notify-form input::placeholder {
+        color: rgba(232, 244, 251, 0.22);
+      }
+      .notify-form input:focus {
+        border-color: var(--blue);
+        background: rgba(0, 151, 206, 0.1);
+        box-shadow: inset 0 0 0 1px rgba(0, 151, 206, 0.25);
+      }
+
+      .notify-form button {
+        background: var(--blue);
+        color: var(--white);
+        border: 1px solid var(--blue);
+        font-family: "Baloo 2", cursive;
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        padding: 13px 22px;
+        cursor: pointer;
+        border-radius: 0 3px 3px 0;
+        transition:
+          background 0.22s,
+          border-color 0.22s,
+          box-shadow 0.22s;
+        white-space: nowrap;
+      }
+
+      .notify-form button:hover {
+        background: var(--blue-lt);
+        border-color: var(--blue-lt);
+        box-shadow: 0 0 22px rgba(0, 151, 206, 0.35);
+      }
+
+      .form-confirm {
+        display: none;
+        margin-top: 14px;
+        font-family: "Baloo 2", cursive;
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        color: var(--blue-lt);
+      }
+
+      /* ════════════════════════════
+     FOOTER
+  ════════════════════════════ */
+      .footer {
+        width: 100%;
+        border-top: 1px solid var(--border);
+        padding: 18px clamp(24px, 5vw, 64px);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+        background: rgba(10, 15, 20, 0.7);
+        backdrop-filter: blur(8px);
+        animation: fade-up 1s ease 0.75s both;
+      }
+
+      .footer-copy {
+        font-family: "Baloo 2", cursive;
+        font-size: 10px;
+        letter-spacing: 0.15em;
+        color: rgba(232, 244, 251, 0.22);
+        text-transform: uppercase;
+      }
+
+      .footer-dots {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .fdot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        animation: blink 2.8s ease-in-out infinite;
+      }
+      .fdot:nth-child(1) {
+        background: #fff1e2;
+        animation-delay: 0s;
+      }
+      .fdot:nth-child(2) {
+        background: #f5b335;
+        animation-delay: 0.35s;
+      }
+      .fdot:nth-child(3) {
+        background: #0097ce;
+        animation-delay: 0.7s;
+      }
+      .fdot:nth-child(4) {
+        background: #aa182c;
+        animation-delay: 1.05s;
+      }
+      .fdot:nth-child(5) {
+        background: #10312b;
+        animation-delay: 1.4s;
+      }
+
+      /* ════════════════════════════
+     ANIMATIONS
+  ════════════════════════════ */
+      @keyframes fade-down {
+        from {
+          opacity: 0;
+          transform: translateY(-14px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes fade-up {
+        from {
+          opacity: 0;
+          transform: translateY(22px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes fade-in {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 0.45;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.3);
+        }
+      }
+      @keyframes float-bird {
+        0%,
+        100% {
+          transform: translateY(0) rotate(-1.5deg);
+        }
+        50% {
+          transform: translateY(-18px) rotate(1.5deg);
+        }
+      }
+      @keyframes halo-pulse {
+        0%,
+        100% {
+          opacity: 0.7;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.08);
+        }
+      }
+      @keyframes scan {
+        0% {
+          opacity: 0;
+          top: 0;
+        }
+        8% {
+          opacity: 0.9;
+        }
+        92% {
+          opacity: 0.9;
+        }
+        100% {
+          opacity: 0;
+          top: 100vh;
+        }
+      }
+
+      /* ════════════════════════════
+     RESPONSIVE
+  ════════════════════════════ */
+      @media (max-width: 700px) {
+        h1 {
+          font-size: clamp(44px, 13vw, 80px);
+        }
+        .footer {
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+        }
+      }
+    </style>
   </head>
   <body>
-    <nav>
-      <div class="ni">
-        <a class="logo" href="#"
-          ><img src="assets/logo-light.svg" alt="Aracari Playground" class="nav-logo"
-        /></a>
-        <ul class="nav-links">
-          <li><a href="#features">Features</a></li>
-          <li><a href="#performance">Performance</a></li>
-          <li><a href="#gallery">Gallery</a></li>
-          <li><a href="#faq">FAQ</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-        <div class="nav-right">
-          <button class="theme-toggle" id="themeToggle">☀ Light</button>
-          <button class="hamburger" id="hamburger">☰</button>
-        </div>
-      </div>
-    </nav>
+    <div class="glow-top"></div>
+    <div class="glow-bottom"></div>
+    <div class="grid-bg"></div>
+    <div class="scan-line"></div>
 
-    <div class="drawer-overlay" id="drawerOverlay"></div>
-    <aside
-      class="drawer"
-      id="drawer"
-      role="dialog"
-      aria-modal="true"
-      aria-label="Navigation"
-    >
-      <div class="drawer-header">
-        <a class="logo" href="#" onclick="closeDrawer()"
-          ><img
-            src="assets/logo-light.svg"
-            alt="Aracari Playground"
-            class="drawer-logo"
-        /></a>
-        <button class="drawer-close" id="drawerClose">✕</button>
-      </div>
-      <div class="drawer-links">
-        <a href="#features" onclick="closeDrawer()">Features</a>
-        <a href="#performance" onclick="closeDrawer()">Performance</a>
-        <a href="#gallery" onclick="closeDrawer()">Gallery</a>
-        <a href="#faq" onclick="closeDrawer()">FAQ</a>
-        <a href="#contact" onclick="closeDrawer()">Contact</a>
-      </div>
-      <div class="drawer-footer">
-        <div class="drawer-theme">
-          <span>Color theme</span>
-          <button id="drawerThemeToggle">☀ Light</button>
-        </div>
-      </div>
-    </aside>
-
-    <!-- HERO -->
-    <section class="hero" id="home">
-      <div class="orb orb1"></div>
-      <div class="orb orb2"></div>
-      <img src="assets/logo-light.svg" alt="Aracari Playground" class="hero-logo-hero" id="heroLogo" />
-      <div class="hero-inner">
-        <div>
-          <div class="hero-badge">⚡ Portfolio &amp; Creative Work</div>
-          <h1>Welcome to <em>Aracari Playground</em></h1>
-          <p class="hero-sub">
-            Graphic design, 3D design, and app development — all in one place.
-            Deployed fast on Cloudflare.
-          </p>
-          <div class="hero-actions">
-            <a href="#gallery" class="btn-primary">View Work →</a>
-            <a href="#contact" class="btn-ghost">Get in Touch</a>
+    <div class="page">
+      <!-- TOP NAV -->
+      <nav class="topbar">
+        <div class="topbar-inner">
+          <span class="topbar-brand">Studio Aracari</span>
+          <div class="topbar-status">
+            <div class="status-dot"></div>
+            Building Something
           </div>
         </div>
-        <div class="hero-visual">
-          <div class="hero-card">
-            <div class="hero-card-bar">
-              <div class="dot dot-r"></div>
-              <div class="dot dot-y"></div>
-              <div class="dot dot-g"></div>
-            </div>
-            <div class="hero-card-body">
-              <div class="card-stat-grid">
-                <div class="stat-box">
-                  <div class="stat-num">98</div>
-                  <div class="stat-lbl">PageSpeed Score</div>
-                </div>
-                <div class="stat-box">
-                  <div class="stat-num">0.06g</div>
-                  <div class="stat-lbl">CO₂ per view</div>
-                </div>
-                <div class="stat-box">
-                  <div class="stat-num">100%</div>
-                  <div class="stat-lbl">WCAG 2.1 AA</div>
-                </div>
-                <div class="stat-box">
-                  <div class="stat-num">Static</div>
-                  <div class="stat-lbl">No DB, no risk</div>
-                </div>
-              </div>
-              <div class="perf-bar-wrap">
-                <div class="perf-bar-label">
-                  <span>Performance</span><span>98</span>
-                </div>
-                <div class="perf-bar">
-                  <div class="perf-bar-fill" style="width: 98%"></div>
-                </div>
-              </div>
-              <div class="perf-bar-wrap" style="margin-top: 0.6rem">
-                <div class="perf-bar-label">
-                  <span>Accessibility</span><span>100</span>
-                </div>
-                <div class="perf-bar">
-                  <div class="perf-bar-fill" style="width: 100%"></div>
-                </div>
-              </div>
-              <div class="perf-bar-wrap" style="margin-top: 0.6rem">
-                <div class="perf-bar-label">
-                  <span>SEO</span><span>95</span>
-                </div>
-                <div class="perf-bar">
-                  <div class="perf-bar-fill" style="width: 95%"></div>
-                </div>
-              </div>
-            </div>
+      </nav>
+
+      <!-- UNDER CONSTRUCTION BANNER — prominent, no logo above it -->
+      <div class="uc-banner">
+        <div class="uc-inner">
+          <div class="uc-rule"></div>
+          <div>
+            <span class="uc-title">Under Construction</span>
+            <span class="uc-sub">Portfolio — Coming Soon</span>
           </div>
+          <div class="uc-rule right"></div>
         </div>
       </div>
-    </section>
 
-    <!-- FEATURES -->
-    <section class="features" id="features">
-      <div class="section-inner">
-        <div class="features-header">
-          <div class="section-label">Everything you need</div>
-          <h2>Aracari Playground <em>Features</em></h2>
-          <p class="section-sub">
-            Built for speed, conversion, and simplicity — no extra tooling
-            required.
+      <!-- HERO -->
+      <main class="hero">
+        <!-- CENTERED VERTICAL STACK: headline → bird → slogan -->
+        <div class="hero-stack">
+          <div class="eyebrow">Studio Aracari</div>
+          <h1>Where <em>craft</em><br />takes flight.</h1>
+
+          <img
+            class="hero-bird"
+            src="assets/WhiteBird.svg"
+            alt="Aracari Mascot"
+          />
+
+          <p class="slogan">
+            The gap between a great idea and a great finished product —<br />that's
+            where I thrive.
           </p>
         </div>
-        <div class="features-grid">
-          <div class="feature-card reveal">
-            <div class="feature-icon">🎨</div>
-            <h3>Tailwind CSS</h3>
-            <p>
-              Transform your template's appearance with the beloved Tailwind
-              framework. Easily customize your design, bringing your unique
-              vision to life.
-            </p>
-          </div>
-          <div class="feature-card reveal">
-            <div class="feature-icon">📬</div>
-            <h3>Contact Form</h3>
-            <p>
-              Supports topics, enabling submissions to go directly to Slack or
-              services like SendGrid/Postmark. Assign different channels to each
-              topic.
-            </p>
-          </div>
-          <div class="feature-card reveal">
-            <div class="feature-icon">📰</div>
-            <h3>Newsletters</h3>
-            <p>
-              Mailchimp integration empowers you to create multiple forms with
-              robust tag and list support. Streamline your marketing
-              effortlessly.
-            </p>
-          </div>
-          <div class="feature-card reveal">
-            <div class="feature-icon">🧩</div>
-            <h3>Page Block Builder</h3>
-            <p>
-              Craft your perfect page with a selection of versatile blocks.
-              Customize and extend exactly the way you want it.
-            </p>
-          </div>
-          <div class="feature-card reveal">
-            <div class="feature-icon">🔗</div>
-            <h3>Git-Based CMS</h3>
-            <p>
-              With Static CMS, your content lives in a Git repository, ensuring
-              efficient content management and seamless team collaboration.
-            </p>
-          </div>
-          <div class="feature-card reveal">
-            <div class="feature-icon">🌓</div>
-            <h3>Light &amp; Dark Mode</h3>
-            <p>
-              Give your visitors the freedom to choose their preferred color
-              scheme, ensuring a personalized browsing experience from day one.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- ALT FEATURES -->
-    <section class="alt-features" id="performance">
-      <div class="section-inner">
-        <div class="alt-feature reveal">
-          <div class="af-content">
-            <div class="af-label">Performance</div>
-            <h2>A <em>green</em> page speed score</h2>
-            <p>
-              Achieving scores in the high 90s and adhering to WCAG 2.1 AA
-              standards, Aracari Playground demonstrates an unwavering
-              commitment to speed and accessibility.
-            </p>
-            <a href="#contact" class="btn-primary">Get Started →</a>
-          </div>
-          <div class="af-visual">
-            <div class="score-ring-wrap">
-              <div class="score-ring">
-                <svg viewBox="0 0 100 100" width="100" height="100">
-                  <circle class="track" cx="50" cy="50" r="45" />
-                  <circle class="fill" cx="50" cy="50" r="45" />
-                </svg>
-                <div class="score-num">98</div>
-              </div>
-              <div class="score-details">
-                <div class="score-metric">
-                  <span>Performance</span><span>98</span>
-                </div>
-                <div class="score-metric">
-                  <span>Accessibility</span><span>100</span>
-                </div>
-                <div class="score-metric">
-                  <span>Best Practices</span><span>100</span>
-                </div>
-                <div class="score-metric"><span>SEO</span><span>95</span></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="alt-feature reverse reveal">
-          <div class="af-content">
-            <div class="af-label">Security</div>
-            <h2><em>Secure</em> by design</h2>
-            <p>
-              By eliminating databases and server-side code, static sites become
-              less prone to attacks. Embrace the robust security of static
-              architecture.
-            </p>
-          </div>
-          <div class="af-visual">
-            <div class="secure-icon">🔒</div>
-            <ul class="checklist">
-              <li>No database to breach or exploit</li>
-              <li>No server-side code execution</li>
-              <li>Edge-cached, globally distributed</li>
-              <li>Automatic HTTPS via Cloudflare</li>
-              <li>DDoS protection built-in</li>
-            </ul>
-          </div>
-        </div>
-        <div class="alt-feature reveal">
-          <div class="af-content">
-            <div class="af-label">Sustainability</div>
-            <h2><em>Green</em> &amp; lean</h2>
-            <p>
-              Aracari Playground's smaller, faster site means quicker
-              conversions and a lighter environmental footprint. Up to 90% less
-              CO₂ than a typical WordPress site.
-            </p>
-          </div>
-          <div class="af-visual">
-            <div class="co2-display">
-              <div class="co2-big">0.06g</div>
-              <div class="co2-unit">CO₂ per page view</div>
-            </div>
-            <div class="co2-compare">
-              <div class="co2-bar-item">
-                <div class="co2-bar-label">Aracari Playground</div>
-                <div class="co2-bar green"></div>
-                <div class="co2-bar-val">0.06g</div>
-              </div>
-              <div class="co2-bar-item">
-                <div class="co2-bar-label">WordPress avg</div>
-                <div class="co2-bar gray"></div>
-                <div class="co2-bar-val">~0.6g+</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+        <div class="h-rule"></div>
 
-    <!-- GALLERY -->
-    <section class="gallery-section" id="gallery">
-      <div class="section-inner">
-        <div class="reveal">
-          <div class="section-label">Portfolio</div>
-          <h2>Selected <em>Work</em></h2>
-          <p class="section-sub" style="margin-bottom: 2rem">
-            Graphic design, 3D, and app development projects.
+        <!-- DISCIPLINES -->
+        <div class="disciplines">
+          <span class="dtag dtag-blue">Graphic Design</span>
+          <span class="dtag dtag-blue">3D Design</span>
+          <span class="dtag dtag-gold">Fusion CAD</span>
+          <span class="dtag dtag-blue">Flutter Development</span>
+          <span class="dtag dtag-gold">Traditional Artwork</span>
+        </div>
+
+        <!-- NOTIFY -->
+        <div class="notify-section">
+          <p class="notify-label">Notify me when it's live</p>
+          <form class="notify-form" onsubmit="handleSubmit(event)">
+            <input type="email" placeholder="your@email.com" required />
+            <button type="submit">Notify Me</button>
+          </form>
+          <p class="form-confirm" id="confirm">
+            ✦ &nbsp;You're on the list. See you soon.
           </p>
         </div>
-        <div class="gallery-filters reveal">
-          <button class="filter-btn active" data-filter="all">All</button>
-          <button class="filter-btn" data-filter="graphic-design">
-            Graphic Design
-          </button>
-          <button class="filter-btn" data-filter="3d">3D Design</button>
-          <button class="filter-btn" data-filter="app">App Dev</button>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="footer">
+        <span class="footer-copy"
+          >© 2026 Studio Aracari &nbsp;·&nbsp; All rights reserved</span
+        >
+        <div class="footer-dots">
+          <div class="fdot"></div>
+          <div class="fdot"></div>
+          <div class="fdot"></div>
+          <div class="fdot"></div>
+          <div class="fdot"></div>
         </div>
-        <div class="masonry-grid" id="masonryGrid">
-          <div
-            class="masonry-item"
-            data-cat="graphic-design"
-            data-title="Brand Identity System"
-          >
-            <img
-              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='420' viewBox='0 0 600 420'%3E%3Crect width='600' height='420' fill='%231a1f2e'/%3E%3Ccircle cx='200' cy='200' r='120' fill='none' stroke='%230097ce' stroke-width='3'/%3E%3Ccircle cx='200' cy='200' r='80' fill='%230097ce' opacity='.15'/%3E%3Crect x='340' y='80' width='180' height='4' fill='%230097ce'/%3E%3Crect x='340' y='110' width='140' height='3' fill='%23ffffff' opacity='.3'/%3E%3Crect x='340' y='135' width='160' height='3' fill='%23ffffff' opacity='.2'/%3E%3Crect x='340' y='160' width='100' height='3' fill='%23ffffff' opacity='.2'/%3E%3Crect x='340' y='270' width='60' height='28' rx='14' fill='%230097ce'/%3E%3Ctext x='200' y='207' font-family='serif' font-size='48' fill='%230097ce' text-anchor='middle' opacity='.9'%3EBi%3C/text%3E%3C/svg%3E"
-              alt="Brand Identity System"
-            />
-            <div class="item-overlay">
-              <div class="item-title">Brand Identity System</div>
-              <span class="item-cat">Graphic Design</span>
-            </div>
-            <div class="item-zoom">⤢</div>
-          </div>
-
-          <div
-            class="masonry-item"
-            data-cat="3d"
-            data-title="Product Visualization"
-          >
-            <img
-              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='500' viewBox='0 0 600 500'%3E%3Crect width='600' height='500' fill='%230f1420'/%3E%3Cellipse cx='300' cy='400' rx='180' ry='30' fill='%23000' opacity='.5'/%3E%3Cpolygon points='300,80 460,280 300,340 140,280' fill='%231e2535' stroke='%235af5c0' stroke-width='1.5'/%3E%3Cpolygon points='300,80 460,280 300,220' fill='%23253045' stroke='%235af5c0' stroke-width='1.5'/%3E%3Cpolygon points='300,80 140,280 300,220' fill='%231a2a38' stroke='%235af5c0' stroke-width='1.5'/%3E%3Cpolygon points='300,220 460,280 300,340 140,280' fill='%23162030' stroke='%235af5c0' stroke-width='1.5'/%3E%3Ccircle cx='480' cy='100' r='5' fill='%235af5c0' opacity='.6'/%3E%3C/svg%3E"
-              alt="Product Visualization"
-            />
-            <div class="item-overlay">
-              <div class="item-title">Product Visualization</div>
-              <span class="item-cat">3D Design</span>
-            </div>
-            <div class="item-zoom">⤢</div>
-          </div>
-
-          <div
-            class="masonry-item"
-            data-cat="app"
-            data-title="Bird Weight Tracker"
-          >
-            <img
-              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='360' viewBox='0 0 600 360'%3E%3Crect width='600' height='360' fill='%2313161b'/%3E%3Crect x='40' y='40' width='160' height='280' rx='16' fill='%231c2028' stroke='%23ffffff11' stroke-width='1'/%3E%3Crect x='55' y='60' width='130' height='16' rx='4' fill='%230097ce' opacity='.8'/%3E%3Crect x='55' y='140' width='130' height='60' rx='8' fill='%230b0d10'/%3E%3Cpolyline points='65,185 80,170 95,175 110,155 125,160 140,145 155,150 170,135' fill='none' stroke='%230097ce' stroke-width='2'/%3E%3Crect x='240' y='40' width='320' height='280' rx='16' fill='%231c2028' stroke='%23ffffff11' stroke-width='1'/%3E%3Crect x='260' y='120' width='90' height='10' rx='3' fill='%23ffffff' opacity='.12'/%3E%3Crect x='380' y='120' width='60' height='10' rx='3' fill='%230097ce' opacity='.5'/%3E%3Crect x='260' y='148' width='90' height='10' rx='3' fill='%23ffffff' opacity='.12'/%3E%3Crect x='380' y='148' width='50' height='10' rx='3' fill='%230097ce' opacity='.4'/%3E%3Crect x='260' y='176' width='90' height='10' rx='3' fill='%23ffffff' opacity='.12'/%3E%3Crect x='380' y='176' width='70' height='10' rx='3' fill='%230097ce' opacity='.6'/%3E%3C/svg%3E"
-              alt="Bird Weight Tracker"
-            />
-            <div class="item-overlay">
-              <div class="item-title">Bird Weight Tracker</div>
-              <span class="item-cat">App Dev</span>
-            </div>
-            <div class="item-zoom">⤢</div>
-          </div>
-
-          <div
-            class="masonry-item"
-            data-cat="graphic-design"
-            data-title="Event Poster Series"
-          >
-            <img
-              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='680' viewBox='0 0 480 680'%3E%3Crect width='480' height='680' fill='%230b0d10'/%3E%3Ccircle cx='240' cy='240' r='180' fill='none' stroke='%230097ce' stroke-width='60' opacity='.08'/%3E%3Ccircle cx='240' cy='240' r='120' fill='none' stroke='%230097ce' stroke-width='2' opacity='.4'/%3E%3Ccircle cx='240' cy='240' r='60' fill='%230097ce' opacity='.15'/%3E%3Crect x='60' y='460' width='360' height='5' fill='%230097ce' opacity='.8'/%3E%3Crect x='60' y='490' width='280' height='18' rx='3' fill='%23ffffff' opacity='.8'/%3E%3Crect x='60' y='600' width='80' height='30' rx='15' fill='%230097ce'/%3E%3C/svg%3E"
-              alt="Event Poster Series"
-            />
-            <div class="item-overlay">
-              <div class="item-title">Event Poster Series</div>
-              <span class="item-cat">Graphic Design</span>
-            </div>
-            <div class="item-zoom">⤢</div>
-          </div>
-
-          <div
-            class="masonry-item"
-            data-cat="3d"
-            data-title="Architectural Render"
-          >
-            <img
-              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='700' height='420' viewBox='0 0 700 420'%3E%3Crect width='700' height='420' fill='%230a0e18'/%3E%3Crect x='0' y='300' width='700' height='120' fill='%23111827'/%3E%3Cpolygon points='200,300 200,120 350,60 500,120 500,300' fill='%231a2235' stroke='%235af5c0' stroke-width='1'/%3E%3Crect x='240' y='200' width='40' height='100' fill='%230a0e18' stroke='%235af5c0' stroke-width='.5'/%3E%3Crect x='320' y='200' width='40' height='100' fill='%230a0e18' stroke='%235af5c0' stroke-width='.5'/%3E%3Ccircle cx='580' cy='80' r='5' fill='%23ffdd88' opacity='.5'/%3E%3C/svg%3E"
-              alt="Architectural Render"
-            />
-            <div class="item-overlay">
-              <div class="item-title">Architectural Render</div>
-              <span class="item-cat">3D Design</span>
-            </div>
-            <div class="item-zoom">⤢</div>
-          </div>
-
-          <div
-            class="masonry-item"
-            data-cat="app"
-            data-title="InDesign Automation Suite"
-          >
-            <img
-              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'%3E%3Crect width='600' height='400' fill='%2313161b'/%3E%3Crect x='0' y='0' width='600' height='36' fill='%231c2028'/%3E%3Ccircle cx='18' cy='18' r='6' fill='%23ff5f57'/%3E%3Ccircle cx='36' cy='18' r='6' fill='%23ffbd2e'/%3E%3Ccircle cx='54' cy='18' r='6' fill='%2328c840'/%3E%3Crect x='20' y='60' width='560' height='10' rx='2' fill='%230097ce' opacity='.6'/%3E%3Crect x='20' y='84' width='400' height='8' rx='2' fill='%23ffffff' opacity='.15'/%3E%3Crect x='40' y='128' width='340' height='8' rx='2' fill='%235af5c0' opacity='.4'/%3E%3Crect x='20' y='270' width='560' height='80' rx='8' fill='%230b0d10'/%3E%3C/svg%3E"
-              alt="InDesign Automation Suite"
-            />
-            <div class="item-overlay">
-              <div class="item-title">InDesign Automation Suite</div>
-              <span class="item-cat">App Dev</span>
-            </div>
-            <div class="item-zoom">⤢</div>
-          </div>
-
-          <div
-            class="masonry-item"
-            data-cat="graphic-design"
-            data-title="Magazine Layout"
-          >
-            <img
-              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='660' viewBox='0 0 500 660'%3E%3Crect width='500' height='660' fill='%23f5f4ef'/%3E%3Crect x='0' y='0' width='500' height='220' fill='%231a1d24'/%3E%3Crect x='30' y='240' width='440' height='6' fill='%231a1d24'/%3E%3Crect x='30' y='268' width='300' height='28' rx='2' fill='%231a1d24'/%3E%3Crect x='30' y='390' width='200' height='200' rx='4' fill='%23e8e6df'/%3E%3Ctext x='250' y='110' font-family='serif' font-size='42' fill='%230097ce' opacity='.9'%3EDESIGN%3C/text%3E%3Ctext x='250' y='155' font-family='serif' font-size='22' fill='%23ffffff' opacity='.6'%3EQuarterly%3C/text%3E%3C/svg%3E"
-              alt="Magazine Layout"
-            />
-            <div class="item-overlay">
-              <div class="item-title">Magazine Layout</div>
-              <span class="item-cat">Graphic Design</span>
-            </div>
-            <div class="item-zoom">⤢</div>
-          </div>
-
-          <div class="masonry-item" data-cat="3d" data-title="Character Model">
-            <img
-              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='460' height='580' viewBox='0 0 460 580'%3E%3Crect width='460' height='580' fill='%230d1117'/%3E%3Ccircle cx='230' cy='140' r='70' fill='%231e2535' stroke='%235af5c0' stroke-width='1'/%3E%3Crect x='170' y='210' width='120' height='160' rx='12' fill='%231a2235' stroke='%235af5c0' stroke-width='1'/%3E%3Crect x='130' y='220' width='40' height='120' rx='8' fill='%231a2235' stroke='%235af5c0' stroke-width='1'/%3E%3Crect x='290' y='220' width='40' height='120' rx='8' fill='%231a2235' stroke='%235af5c0' stroke-width='1'/%3E%3Crect x='185' y='370' width='40' height='130' rx='8' fill='%231a2235' stroke='%235af5c0' stroke-width='1'/%3E%3Crect x='235' y='370' width='40' height='130' rx='8' fill='%231a2235' stroke='%235af5c0' stroke-width='1'/%3E%3Ccircle cx='210' cy='130' r='8' fill='%235af5c0' opacity='.6'/%3E%3Ccircle cx='250' cy='130' r='8' fill='%235af5c0' opacity='.6'/%3E%3C/svg%3E"
-              alt="Character Model"
-            />
-            <div class="item-overlay">
-              <div class="item-title">Character Model</div>
-              <span class="item-cat">3D Design</span>
-            </div>
-            <div class="item-zoom">⤢</div>
-          </div>
-
-          <div
-            class="masonry-item"
-            data-cat="app"
-            data-title="Pip: Wings of Fate"
-          >
-            <img
-              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'%3E%3Cdefs%3E%3ClinearGradient id='sky' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%230b0e18'/%3E%3Cstop offset='1' stop-color='%231a2540'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='600' height='400' fill='url(%23sky)'/%3E%3Crect x='0' y='300' width='600' height='100' fill='%23111827'/%3E%3Crect x='0' y='280' width='180' height='120' fill='%231a2235'/%3E%3Crect x='200' y='260' width='100' height='140' fill='%231a2235'/%3E%3Crect x='420' y='270' width='180' height='130' fill='%231a2235'/%3E%3Cpolygon points='280,200 260,220 260,180' fill='%230097ce'/%3E%3Ccircle cx='280' cy='200' r='8' fill='%230097ce'/%3E%3Ctext x='30' y='30' font-family='serif' font-size='16' fill='%230097ce' opacity='.9'%3EPip: Wings of Fate%3C/text%3E%3C/svg%3E"
-              alt="Pip: Wings of Fate"
-            />
-            <div class="item-overlay">
-              <div class="item-title">Pip: Wings of Fate</div>
-              <span class="item-cat">App Dev</span>
-            </div>
-            <div class="item-zoom">⤢</div>
-          </div>
-
-          <div
-            class="masonry-item"
-            data-cat="graphic-design"
-            data-title="Packaging Design"
-          >
-            <img
-              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='560' height='420' viewBox='0 0 560 420'%3E%3Crect width='560' height='420' fill='%23f0ece0'/%3E%3Crect x='160' y='60' width='240' height='300' rx='4' fill='%231a1d24'/%3E%3Crect x='175' y='80' width='210' height='140' fill='%230097ce'/%3E%3Ccircle cx='280' cy='150' r='45' fill='%231a1d24'/%3E%3Ctext x='280' y='158' font-family='serif' font-size='22' fill='%230097ce' text-anchor='middle'%3EAP%3C/text%3E%3Crect x='185' y='240' width='190' height='12' rx='2' fill='%23ffffff' opacity='.8'/%3E%3C/svg%3E"
-              alt="Packaging Design"
-            />
-            <div class="item-overlay">
-              <div class="item-title">Packaging Design</div>
-              <span class="item-cat">Graphic Design</span>
-            </div>
-            <div class="item-zoom">⤢</div>
-          </div>
-
-          <div
-            class="masonry-item"
-            data-cat="3d"
-            data-title="Environment Scene"
-          >
-            <img
-              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='700' height='460' viewBox='0 0 700 460'%3E%3Cdefs%3E%3ClinearGradient id='envsky' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%230a0c14'/%3E%3Cstop offset='1' stop-color='%23162030'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='700' height='460' fill='url(%23envsky)'/%3E%3Crect x='0' y='340' width='700' height='120' fill='%230d1520'/%3E%3Crect x='80' y='200' width='60' height='140' fill='%231a2535' stroke='%235af5c0' stroke-width='.5'/%3E%3Crect x='280' y='160' width='140' height='180' fill='%231a2535' stroke='%235af5c0' stroke-width='.5'/%3E%3Crect x='500' y='210' width='80' height='130' fill='%231a2535' stroke='%235af5c0' stroke-width='.5'/%3E%3Ccircle cx='600' cy='60' r='15' fill='%23ffdd88' opacity='.3'/%3E%3C/svg%3E"
-              alt="Environment Scene"
-            />
-            <div class="item-overlay">
-              <div class="item-title">Environment Scene</div>
-              <span class="item-cat">3D Design</span>
-            </div>
-            <div class="item-zoom">⤢</div>
-          </div>
-
-          <div
-            class="masonry-item"
-            data-cat="app"
-            data-title="Grommet Banner Tool"
-          >
-            <img
-              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='460' viewBox='0 0 600 460'%3E%3Crect width='600' height='460' fill='%2313161b'/%3E%3Crect x='20' y='20' width='260' height='420' rx='12' fill='%231c2028' stroke='%23ffffff11' stroke-width='1'/%3E%3Crect x='36' y='40' width='228' height='16' rx='4' fill='%230097ce' opacity='.7'/%3E%3Crect x='50' y='86' width='200' height='120' rx='4' fill='%231a2235'/%3E%3Ccircle cx='64' cy='100' r='6' fill='%230097ce' opacity='.8'/%3E%3Ccircle cx='236' cy='100' r='6' fill='%230097ce' opacity='.8'/%3E%3Ccircle cx='64' cy='192' r='6' fill='%230097ce' opacity='.8'/%3E%3Ccircle cx='236' cy='192' r='6' fill='%230097ce' opacity='.8'/%3E%3Crect x='50' y='310' width='200' height='32' rx='8' fill='%230097ce'/%3E%3Crect x='300' y='20' width='280' height='420' rx='12' fill='%231c2028' stroke='%23ffffff11' stroke-width='1'/%3E%3Crect x='332' y='88' width='216' height='130' rx='4' fill='%230097ce' opacity='.1'/%3E%3Ctext x='440' y='160' font-family='serif' font-size='28' fill='%230097ce' opacity='.5' text-anchor='middle'%3EBANNER%3C/text%3E%3Ccircle cx='340' cy='96' r='5' fill='%230097ce' opacity='.6'/%3E%3Ccircle cx='540' cy='96' r='5' fill='%230097ce' opacity='.6'/%3E%3Ccircle cx='340' cy='210' r='5' fill='%230097ce' opacity='.6'/%3E%3Ccircle cx='540' cy='210' r='5' fill='%230097ce' opacity='.6'/%3E%3C/svg%3E"
-              alt="Grommet Banner Tool"
-            />
-            <div class="item-overlay">
-              <div class="item-title">Grommet Banner Tool</div>
-              <span class="item-cat">App Dev</span>
-            </div>
-            <div class="item-zoom">⤢</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- LIGHTBOX -->
-    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
-      <div class="lightbox-inner">
-        <button class="lightbox-close" id="lbClose">✕</button>
-        <button class="lightbox-nav lightbox-prev" id="lbPrev">‹</button>
-        <button class="lightbox-nav lightbox-next" id="lbNext">›</button>
-        <img class="lightbox-media" id="lbImg" src="" alt="" />
-        <div class="lightbox-info">
-          <div class="lightbox-title" id="lbTitle"></div>
-          <div class="lightbox-cat" id="lbCat"></div>
-        </div>
-        <div class="lightbox-counter" id="lbCounter"></div>
-      </div>
+      </footer>
     </div>
 
-    <!-- FAQ -->
-    <section class="faq" id="faq">
-      <div class="section-inner">
-        <div class="faq-header reveal">
-          <div class="section-label">Questions answered</div>
-          <h2>FAQ<em>s</em></h2>
-        </div>
-        <div class="faq-grid">
-          <div class="faq-item reveal">
-            <button class="faq-q" aria-expanded="false">
-              Where can I host Aracari Playground?
-              <span class="chevron">▼</span>
-            </button>
-            <div class="faq-a">
-              Aracari Playground deploys beautifully to Cloudflare Pages as a
-              pure static site. Cloudflare offers unlimited free bandwidth,
-              making it the top choice.
-            </div>
-          </div>
-          <div class="faq-item reveal">
-            <button class="faq-q" aria-expanded="false">
-              What newsletter platforms are supported?
-              <span class="chevron">▼</span>
-            </button>
-            <div class="faq-a">
-              Aracari Playground integrates with Mailchimp for newsletter
-              services, supporting multiple forms with robust tag and list
-              management out of the box.
-            </div>
-          </div>
-          <div class="faq-item reveal">
-            <button class="faq-q" aria-expanded="false">
-              How is the contact form handled? <span class="chevron">▼</span>
-            </button>
-            <div class="faq-a">
-              Contact form submissions can be routed through Postmark or
-              MailGun, or posted directly to a Slack channel per topic.
-            </div>
-          </div>
-          <div class="faq-item reveal">
-            <button class="faq-q" aria-expanded="false">
-              Is Aracari Playground free to use? <span class="chevron">▼</span>
-            </button>
-            <div class="faq-a">
-              Yes! Aracari Playground is released under the CC BY 4.0 license.
-              Use it freely as long as you include attribution.
-            </div>
-          </div>
-          <div class="faq-item reveal">
-            <button class="faq-q" aria-expanded="false">
-              Does it come with a CMS? <span class="chevron">▼</span>
-            </button>
-            <div class="faq-a">
-              Yes. Aracari Playground is built on Static CMS, an open-source
-              Git-based CMS that supports multiple users and lets your team edit
-              content without touching code.
-            </div>
-          </div>
-          <div class="faq-item reveal">
-            <button class="faq-q" aria-expanded="false">
-              Does it include user authentication?
-              <span class="chevron">▼</span>
-            </button>
-            <div class="faq-a">
-              Aracari Playground provides forms and starter edge functions, but
-              doesn't include authentication logic. Integrate your own auth
-              system or a service like Clerk or Auth0.
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CTA -->
-    <section class="cta-section">
-      <div class="section-inner">
-        <div class="cta-banner reveal">
-          <div class="section-label">Ready to launch?</div>
-          <h2>Kickstart your project <em>today</em></h2>
-          <p>
-            Clone, configure, deploy. Your blazing fast portfolio is just
-            minutes away.
-          </p>
-          <div class="cta-actions">
-            <a href="#contact" class="btn-primary">Get in Touch →</a>
-            <a
-              href="https://github.com/unfolding-io/StarFunnel"
-              class="btn-ghost"
-              target="_blank"
-              rel="noopener"
-              >View on GitHub</a
-            >
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section class="contact-section" id="contact">
-      <div class="section-inner">
-        <div class="contact-grid">
-          <div>
-            <div class="section-label reveal">Get in touch</div>
-            <h2 class="reveal">Let's build something <em>great</em></h2>
-            <p class="section-sub reveal" style="margin-bottom: 2rem">
-              Need help setting up Aracari Playground or want custom
-              integrations? Reach out and we'll get you started.
-            </p>
-            <form class="contact-form reveal" onsubmit="handleSubmit(event)">
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="name">Name</label
-                  ><input
-                    type="text"
-                    id="name"
-                    placeholder="Your name"
-                    required
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="email">Email</label
-                  ><input
-                    type="email"
-                    id="email"
-                    placeholder="you@example.com"
-                    required
-                  />
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="topic">Topic</label>
-                <select id="topic">
-                  <option value="">Select a topic…</option>
-                  <option value="setup">Help with setup</option>
-                  <option value="custom">Custom integration</option>
-                  <option value="license">License inquiry</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="message">Message</label
-                ><textarea
-                  id="message"
-                  placeholder="Tell us about your project…"
-                  required
-                ></textarea>
-              </div>
-              <button class="btn-submit" type="submit">Send Message →</button>
-              <p
-                id="form-thanks"
-                style="display: none; color: var(--accent); font-size: 0.9rem"
-              >
-                ✓ Thanks! We'll be in touch soon.
-              </p>
-            </form>
-          </div>
-          <div>
-            <div class="newsletter-box reveal">
-              <h3>Join our newsletter</h3>
-              <p>
-                Stay updated on new features, themes, and developments. No spam,
-                ever.
-              </p>
-              <div class="newsletter-row">
-                <input
-                  type="email"
-                  placeholder="you@example.com"
-                  aria-label="Email for newsletter"
-                />
-                <button
-                  class="btn-sub"
-                  type="button"
-                  onclick="this.textContent = '✓ Subscribed!'"
-                >
-                  Subscribe
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-      <div class="footer-inner">
-        <div class="footer-grid">
-          <div class="footer-brand">
-            <a class="logo" href="#"
-              ><img
-                src="assets/logo-light.svg"
-                alt="Aracari Playground"
-                class="nav-logo"
-            /></a>
-            <p>
-              A fast, green, and beautiful portfolio site. Deploy to Cloudflare
-              in minutes.
-            </p>
-          </div>
-          <div class="footer-col">
-            <h4>Info</h4>
-            <ul class="footer-links">
-              <li><a href="#">Home</a></li>
-              <li><a href="#">License</a></li>
-              <li><a href="#">About</a></li>
-              <li><a href="#contact">Contact</a></li>
-            </ul>
-          </div>
-          <div class="footer-col">
-            <h4>Work</h4>
-            <ul class="footer-links">
-              <li><a href="#gallery">Gallery</a></li>
-              <li><a href="#features">Features</a></li>
-              <li><a href="#performance">Performance</a></li>
-            </ul>
-          </div>
-          <div class="footer-col">
-            <h4>Legal</h4>
-            <ul class="footer-links">
-              <li><a href="#">Privacy</a></li>
-              <li><a href="#">Cookies</a></li>
-              <li><a href="#contact">Sign Up</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="footer-bottom">
-          <p>
-            © 2025 Aracari Playground. Inspired by
-            <a
-              href="https://starfunnel.unfolding.io/"
-              target="_blank"
-              rel="noopener"
-              >unfolding.io</a
-            >. Released under CC BY 4.0.
-          </p>
-          <p>
-            Built for
-            <a
-              href="https://pages.cloudflare.com/"
-              target="_blank"
-              rel="noopener"
-              >Cloudflare Pages</a
-            >
-          </p>
-        </div>
-      </div>
-    </footer>
-
-    <script src="js/main.js"></script>
+    <script>
+      function handleSubmit(e) {
+        e.preventDefault();
+        const confirm = document.getElementById("confirm");
+        confirm.style.display = "block";
+        e.target.style.opacity = "0.4";
+        e.target.style.pointerEvents = "none";
+      }
+    </script>
   </body>
 </html>
