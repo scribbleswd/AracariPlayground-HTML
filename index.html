@@ -310,21 +310,21 @@
         font-family: "Baloo 2", cursive;
         font-size: clamp(56px, 9vw, 118px);
         font-weight: 700;
-        line-height: 0.89;
+        line-height: 1.05;
         letter-spacing: -0.025em;
         color: var(--white);
       }
 
       h1 em {
         font-style: italic;
-        background: linear-gradient(
-          135deg,
-          var(--blue-lt) 0%,
-          var(--blue) 100%
-        );
+        display: inline-block;
+        font-size: calc(1em + 20px);
+        background: linear-gradient(115deg, #24ccff 0%, #003f6b 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
+        padding: 0 0.15em;
+        margin: 0 -0.15em;
       }
 
       /* ── HERO BIRD — centered between headline and slogan ── */
