@@ -686,11 +686,11 @@ h1 em {
     margin-top: 5px;
   }
   .slogan {
-    font-size: clamp(10px, 2.5vw, 24px);
+    font-size: clamp(12px, 2.5vw, 24px);
   }
   .dtag {
-    font-size: 13px;
-    padding: 7px 16px;
+    font-size: 10px;
+    padding: 3px 8px;
   }
   .disciplines-row {
     gap: 10px;
